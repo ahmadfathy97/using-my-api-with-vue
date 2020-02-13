@@ -40,7 +40,7 @@
     mounted(){
       if(window.localStorage.getItem('authToken')){
         this.logedIn = true;
-        window.location.href = 'http://127.0.0.1:8080/'
+        window.location.href = 'http://' + window.location.host
       }
     },
     methods:{
@@ -57,7 +57,8 @@
         .then((data)=>{
           if(window.localStorage && data.auth_token){
             window.localStorage.setItem('authToken', data.auth_token);
-            window.location.href = 'http://127.0.0.1:8080/'
+            window.localStorage.setItem('user_id', data.id);
+            window.location.href = 'http://' + window.location.host
           } else{
             this.error = data.msg;
           }

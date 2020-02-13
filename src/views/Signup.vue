@@ -56,7 +56,7 @@ export default{
   mounted(){
     if(window.localStorage.getItem('authToken')){
       this.logedIn = true;
-      window.location.href = 'http://127.0.0.1:8080/'
+      window.location.href = 'http://' + window.location.host
     }
   },
   methods:{
@@ -72,6 +72,7 @@ export default{
       .then(res=> res.json())
       .then((data)=>{
         console.log(data);
+        window.location.href = 'http://' + window.location.host + '/login'
       })
       .catch(err => console.log(err));
     }

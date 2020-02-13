@@ -6,6 +6,8 @@ import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import Logout from '../views/Logout.vue'
 import AddPost from '../views/AddPost.vue'
+import Post from '../views/Post.vue'
+
 
 
 
@@ -39,9 +41,19 @@ const routes = [
     component: Logout
   },
   {
+    path: '/user/:id',
+    name: 'Profile',
+    component: Profile
+  },
+  {
     path: '/addpost',
-    name: 'Logout',
+    name: 'AddPost',
     component: AddPost
+  },
+  {
+    path: '/posts/:id',
+    name: 'Post',
+    component: Post
   }
 ]
 
