@@ -5,10 +5,14 @@
     <div class="card post">
       <div class="card-body">
         <h3 class="card-title ">{{post.title}}</h3>
-        <span class="card-title bold italic">{{post.user_id.username}}</span>
+        <span class="card-title bold italic"><router-link :to="'/user/' + post.user_id._id">{{post.user_id.username}}</router-link></span>
         <span class="card-title italic">{{post.created_at}}</span>
         <p> {{post.body}} </p>
-        <a href="#" class="btn btn-primary">#{{post.category_id.category_name}}</a>
+        <div v-if="post.owner" class="owner">
+          <a href="#">تعديل</a>
+          <a href="#">حذف</a>
+        </div>
+        <a :href="'/categories/' + post.category_id.category_name" class="btn btn-primary">#{{post.category_id.category_name}}</a>
 
         <h5 class="likes">{{post.likes.length > 1 ? post.likes.length + ' likes' : post.likes.length + ' like'}}</h5>
         <h2 v-if="post.comments.length > 0">comments</h2>
@@ -85,11 +89,7 @@ export default{
         })
         .then(res => res.json())
         .then((data) => {
-          this.posts.forEach((post)=>{
-            if(post._id === data.post_id){
-              post.comments.push(data.comment)
-            }
-          })
+          this.post.comments.push(data.comment);
           e.target.value =''
         }).catch((err)=>{
           console.log(err);

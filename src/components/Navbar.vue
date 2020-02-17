@@ -4,6 +4,7 @@
     <template v-if="logedIn">
       <router-link :to="'/user/'+user_id" exec>profile</router-link>
       <router-link to="/addpost" exec>Add Post</router-link>
+      <router-link to="/categories" exec>categories</router-link>
       <router-link to="/logout" exec>logout</router-link>
     </template>
     <template  v-if="!logedIn">

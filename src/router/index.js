@@ -7,6 +7,13 @@ import Signup from '../views/Signup.vue'
 import Logout from '../views/Logout.vue'
 import AddPost from '../views/AddPost.vue'
 import Post from '../views/Post.vue'
+import Categories from '../views/Categories.vue'
+import addCategory from '../views/addCategory.vue'
+import Category from '../views/Category.vue'
+
+
+
+
 
 
 
@@ -54,6 +61,22 @@ const routes = [
     path: '/posts/:id',
     name: 'Post',
     component: Post
+  },
+  {
+    path: '/categories',
+    name: 'Categories',
+    component: Categories
+  },
+  {
+    path: '/addCategory',
+    name: 'addCategory',
+    component: addCategory
+  }
+  ,
+  {
+    path: '/categories/:name',
+    name: 'Category',
+    component: Category
   }
 ]
 
