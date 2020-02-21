@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="row">
+    <div v-if="logedIn" class="row">
       <div class="col-md-12">
         <img :src="category.category_pic" width="100%" >
         <h5>{{ category.category_name}}</h5>
@@ -62,6 +62,8 @@ export default{
   },
   mounted(){
     if(window.localStorage.getItem('authToken')){
+      this.user_id = window.localStorage.getItem('user_id');
+      this.logedIn = true;
       let name = this.$route.params.name;
       fetch('http://127.0.0.1:3000/api/categories/' + name ,{
         headers: {

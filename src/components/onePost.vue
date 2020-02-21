@@ -50,6 +50,7 @@ export default{
   data(){
     return{
       logedIn: false,
+      user_id: '',
       post: {},
       comment:{
         user_id: window.localStorage.user_id,
@@ -62,6 +63,7 @@ export default{
   mounted(){
     if( window.localStorage.getItem('authToken')){
       this.logedIn = true;
+      this.user_id = window.localStorage.getItem('user_id');
       let id = this.post_id || ''
       fetch('http://127.0.0.1:3000/api/posts/' + id,{
         headers: {
