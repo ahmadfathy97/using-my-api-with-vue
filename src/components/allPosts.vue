@@ -14,7 +14,12 @@
         </div>
         <a :href="'/categories/' + post.category_id.category_name" class="btn btn-primary">#{{post.category_id.category_name}}</a>
 
-        <h5 class="likes">{{post.likes.length > 1 ? post.likes.length + ' likes' : post.likes.length + ' like'}}</h5>
+        <h5 class="likes">
+          <span v-if="!post.likes.indexOf(user_id) ? true : false" class="btn btn-danger" :data-post="post._id" @click="like($event)" role="button">Like</span>
+          <span v-if="post.likes.indexOf(user_id) ? true : false" class="btn btn-primary" :data-post="post._id" @click="like($event)" role="button">Like</span>
+
+          <span>{{post.likes.length}}</span>
+        </h5>
         <h2 v-if="post.comments.length > 0">comments</h2>
         <ul v-if="post.comments.length > 0" class="comments">
           <li v-for="comment in post.comments">
@@ -45,6 +50,7 @@ export default{
   data(){
     return{
       logedIn: false,
+      user_id:'',
       posts: [],
       comment:{
         user_id: window.localStorage.user_id,
@@ -56,7 +62,8 @@ export default{
   mounted(){
     if( window.localStorage.getItem('authToken')){
       this.logedIn = true;
-      fetch('http://127.0.0.1:3000/api/posts',{
+      this.user_id = window.localStorage.getItem('user_id');
+      fetch('http://127.0.0.1:3000/api/posts/latest',{
         headers: {
           'Content-Type': 'application/json',
           'auth_token': window.localStorage.getItem('authToken') || null
@@ -97,6 +104,30 @@ export default{
           console.log(err);
         })
       }
+    },
+    like(e){
+      fetch(`http://127.0.0.1:3000/api/posts/${e.target.dataset.post}/like`,{
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json',
+          'auth_token': window.localStorage.getItem('authToken') || null
+        }
+      })
+      .then(res => res.json())
+      .then((data) => {
+        if(e.target.classList.contains('btn-primary')){
+          e.target.classList.remove('btn-primary');
+          e.target.classList.add('btn-danger')
+        } else{
+          e.target.classList.add('btn-primary');
+          e.target.classList.remove('btn-danger')
+        }
+        this.posts.forEach((post)=>{
+          if(post._id === data.post_id){
+            post.likes = data.likes;
+          }
+        })
+      })
     }
   }
 }
