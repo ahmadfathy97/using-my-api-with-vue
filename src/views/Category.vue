@@ -12,15 +12,11 @@
           <span class="card-title bold italic"><router-link :to="'/user/' + post.user_id._id">{{post.user_id.username}}</router-link></span>
           <span class="card-title italic">{{post.created_at}}</span>
           <p> {{post.body}} </p>
-          <div v-if="post.owner" class="owner">
-            <a href="#">تعديل</a>
-            <a href="#">حذف</a>
-          </div>
           <a :href="'/categories/' + post.category_id.category_name" class="btn btn-primary">#{{post.category_id.category_name}}</a>
 
           <h5 class="likes">
-            <span v-if="!post.likes.indexOf(user_id) ? true : false" class="btn btn-danger" :data-post="post._id" @click="like($event)" role="button">Like</span>
-            <span v-if="post.likes.indexOf(user_id) ? true : false" class="btn btn-primary" :data-post="post._id" @click="like($event)" role="button">Like</span>
+            <span v-if="!post.likes.indexOf(user_id)" class="btn btn-danger" :data-post="post._id" @click="like($event)" role="button">unLike</span>
+            <span v-if="post.likes.indexOf(user_id)" class="btn btn-primary" :data-post="post._id" @click="like($event)" role="button">Like</span>
 
             <span>{{post.likes.length}}</span>
           </h5>
@@ -47,6 +43,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default{
   data(){
     return {
@@ -60,12 +57,13 @@ export default{
       }
     }
   },
+  computed: mapGetters(["api"]),
   mounted(){
     if(window.localStorage.getItem('authToken')){
       this.user_id = window.localStorage.getItem('user_id');
       this.logedIn = true;
       let name = this.$route.params.name;
-      fetch('http://127.0.0.1:3000/api/categories/' + name ,{
+      fetch(`${this.api}/categories/${name}` ,{
         headers: {
           'Content-Type': 'application/json',
           'auth_token': window.localStorage.getItem('authToken') || null
@@ -80,7 +78,7 @@ export default{
       .catch(err => console.log(err));
     } else {
       this.logedIn = false;
-      window.location.href = 'http://127.0.0.1:8080/login'
+      window.location.href = 'http://' + window.location.host + '/login'
     }
   },
   methods:{
@@ -91,7 +89,7 @@ export default{
         this.comment.user_id = window.localStorage.user_id;
         this.comment.comment_body = e.target.value;
         console.log(this.comment);
-        fetch(`http://127.0.0.1:3000/api/posts/${e.target.dataset.post}/add-comment`,{
+        fetch(`${this.api}/posts/${e.target.dataset.post}/add-comment`,{
           method: 'POST',
           headers:{
             'Content-Type': 'application/json',
@@ -113,7 +111,7 @@ export default{
       }
     },
     like(e){
-      fetch(`http://127.0.0.1:3000/api/posts/${e.target.dataset.post}/like`,{
+      fetch(`${this.api}/posts/${e.target.dataset.post}/like`,{
         method: 'POST',
         headers:{
           'Content-Type': 'application/json',

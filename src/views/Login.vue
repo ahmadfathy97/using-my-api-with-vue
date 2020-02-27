@@ -26,6 +26,8 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
   export default{
     data(){
       return{
@@ -37,6 +39,7 @@
         logedIn: false
       }
     },
+    computed: mapGetters(["api"]),
     mounted(){
       if(window.localStorage.getItem('authToken')){
         this.logedIn = true;
@@ -46,7 +49,7 @@
     methods:{
       login(e){
         e.preventDefault();
-        fetch('http://127.0.0.1:3000/api/auth/login',{
+        fetch(`${this.api}/auth/login`,{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

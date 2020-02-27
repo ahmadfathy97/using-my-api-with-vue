@@ -9,14 +9,15 @@
         <span class="card-title italic">{{post.created_at}}</span>
         <p> {{post.body}} </p>
         <div v-if="post.owner" class="owner">
-          <a href="#">تعديل</a>
-          <a href="#">حذف</a>
+          <a class="btn btn-info" :href="'/posts/edit/' + post._id">edit</a>
+          <span class="btn btn-danger" @dblclick="deletePost($event)" :data-post="post._id" >delete</span>
+
         </div>
         <a :href="'/categories/' + post.category_id.category_name" class="btn btn-primary">#{{post.category_id.category_name}}</a>
 
         <h5 class="likes">
-          <span v-if="!post.likes.indexOf(user_id) ? true : false" class="btn btn-danger" :data-post="post._id" @click="like($event)" role="button">Like</span>
-          <span v-if="post.likes.indexOf(user_id) ? true : false" class="btn btn-primary" :data-post="post._id" @click="like($event)" role="button">Like</span>
+          <span v-if="!post.likes.indexOf(user_id)" class="btn btn-danger" :data-post="post._id" @click="like($event)" role="button">unLike</span>
+          <span v-if="post.likes.indexOf(user_id)" class="btn btn-primary" :data-post="post._id" @click="like($event)" role="button">Like</span>
 
           <span>{{post.likes.length}}</span>
         </h5>
@@ -45,7 +46,7 @@
 
 
 <script>
-
+import { mapGetters } from 'vuex';
 export default{
   data(){
     return{
@@ -59,11 +60,12 @@ export default{
       }
     }
   },
+  computed: mapGetters(["api"]),
   mounted(){
     if( window.localStorage.getItem('authToken')){
       this.logedIn = true;
       this.user_id = window.localStorage.getItem('user_id');
-      fetch('http://127.0.0.1:3000/api/posts/latest',{
+      fetch( `${this.api}/posts/latest`,{
         headers: {
           'Content-Type': 'application/json',
           'auth_token': window.localStorage.getItem('authToken') || null
@@ -84,7 +86,7 @@ export default{
         this.comment.user_id = window.localStorage.user_id;
         this.comment.comment_body = e.target.value;
         console.log(this.comment);
-        fetch(`http://127.0.0.1:3000/api/posts/${e.target.dataset.post}/add-comment`,{
+        fetch(`${this.api}/posts/${e.target.dataset.post}/add-comment`,{
           method: 'POST',
           headers:{
             'Content-Type': 'application/json',
@@ -106,7 +108,7 @@ export default{
       }
     },
     like(e){
-      fetch(`http://127.0.0.1:3000/api/posts/${e.target.dataset.post}/like`,{
+      fetch(`${this.api}/posts/${e.target.dataset.post}/like`,{
         method: 'POST',
         headers:{
           'Content-Type': 'application/json',
@@ -118,15 +120,39 @@ export default{
         if(e.target.classList.contains('btn-primary')){
           e.target.classList.remove('btn-primary');
           e.target.classList.add('btn-danger')
+          e.target.textContent = 'unlike'
         } else{
           e.target.classList.add('btn-primary');
           e.target.classList.remove('btn-danger')
+          e.target.textContent = 'like'
+
         }
         this.posts.forEach((post)=>{
           if(post._id === data.post_id){
             post.likes = data.likes;
+            console.log(data, post);
           }
         })
+      })
+    },
+    deletePost(e){
+      e.preventDefault();
+      let postId = e.target.dataset.post;
+      fetch(`${this.api}/posts/${postId}`,{
+        method: 'delete',
+        headers:{
+          'Content-Type': 'application/json',
+          'auth_token': window.localStorage.getItem('authToken') || null
+        }
+      })
+      .then(res => res.json())
+      .then((data) => {
+        console.log(data);
+        let postsAfterDel = this.posts.filter((post)=>{
+          return post._id != data.post_id
+        });
+        console.log(this.posts.length, this.postsAfterDel);
+        this.posts = postsAfterDel;
       })
     }
   }
@@ -138,7 +164,16 @@ export default{
   margin: 15px auto;
   padding: 10px 3px;
   background: #eee;
-  box-shadow: 0 3px 7px #222
+  box-shadow: 0 3px 7px #222;
+  position: relative;
+}
+.owner{
+  position:absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  right: 0;
 }
 .bold{
   font-weight: 900  !important;

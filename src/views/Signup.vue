@@ -39,6 +39,8 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
 export default{
   data(){
     return{
@@ -53,16 +55,18 @@ export default{
       logedIn: false
     }
   },
+  computed: mapGetters(["api"]),
   mounted(){
     if(window.localStorage.getItem('authToken')){
       this.logedIn = true;
       window.location.href = 'http://' + window.location.host
     }
   },
+
   methods:{
     signup(e){
       e.preventDefault();
-      fetch('http://127.0.0.1:3000/api/auth/signup',{
+      fetch(`${this.api}/auth/signup`,{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

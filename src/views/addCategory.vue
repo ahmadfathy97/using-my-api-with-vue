@@ -27,6 +27,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 export default{
   data(){
     return {
@@ -39,6 +40,7 @@ export default{
       error: ''
     }
   },
+  computed: mapGetters(["api"]),
   methods:{
     handleUploadFile(){
       this.data.category_pic = this.$refs.category_pic.files[0];
@@ -55,7 +57,7 @@ export default{
       }
       console.log(this.data, formData);
       if(window.localStorage.getItem('authToken')){
-        fetch('http://127.0.0.1:3000/api/categories',{
+        fetch(`${this.api}/categories`,{
           method: 'POST',
           headers: {
             // 'Content-Type': 'application/x-www-form-urlencoded',
@@ -72,7 +74,7 @@ export default{
         .catch(err => console.log(err));
       } else {
         this.logedIn = false;
-        window.location.href = 'http://127.0.0.1:8080/login'
+        window.location.href = 'http://' + window.location.host + '/login'
       }
      }
   }

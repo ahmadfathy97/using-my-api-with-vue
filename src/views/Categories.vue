@@ -15,6 +15,8 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
 export default{
   data(){
     return {
@@ -22,9 +24,10 @@ export default{
       categories: []
     }
   },
+  computed: mapGetters(["api"]),
   mounted(){
     if(window.localStorage.getItem('authToken')){
-      fetch('http://127.0.0.1:3000/api/categories',{
+      fetch(`${this.api}/categories`,{
         headers: {
           'Content-Type': 'application/json',
           'auth_token': window.localStorage.getItem('authToken') || null
@@ -32,12 +35,13 @@ export default{
       })
       .then(res=> res.json())
       .then((data)=>{
+        this.logedIn = true;
         this.categories = data;
       })
       .catch(err => console.log(err));
     } else {
       this.logedIn = false;
-      window.location.href = 'http://127.0.0.1:8080/login'
+      window.location.href = 'http://' + window.location.host + '/login'
     }
   }
 }

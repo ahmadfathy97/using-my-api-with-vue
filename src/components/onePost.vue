@@ -9,13 +9,13 @@
         <span class="card-title italic">{{post.created_at}}</span>
         <p> {{post.body}} </p>
         <div v-if="post.owner" class="owner">
-          <a href="#">تعديل</a>
-          <a href="#">حذف</a>
+          <a class="btn btn-info" :href="'/posts/edit/' + post._id">edit</a>
+          <span class="btn btn-danger" @dblclick="deletePost($event)" :data-post="post._id" >delete</span>
         </div>
         <a :href="'/categories/' + post.category_id.category_name" class="btn btn-primary">#{{post.category_id.category_name}}</a>
 
         <h5 class="likes">
-          <span v-if="!post.likes.indexOf(user_id) ? true : false" class="btn btn-danger" :data-post="post._id" @click="like($event)" role="button">Like</span>
+          <span v-if="!post.likes.indexOf(user_id) ? true : false" class="btn btn-danger" :data-post="post._id" @click="like($event)" role="button">unLike</span>
           <span v-if="post.likes.indexOf(user_id) ? true : false" class="btn btn-primary" :data-post="post._id" @click="like($event)" role="button">Like</span>
 
           <span>{{post.likes.length}}</span>
@@ -45,6 +45,7 @@
 
 
 <script>
+import { mapGetters } from 'vuex';
 
 export default{
   data(){
@@ -59,13 +60,14 @@ export default{
       }
     }
   },
+  computed: mapGetters(["api"]),
   props:['post_id'],
   mounted(){
     if( window.localStorage.getItem('authToken')){
       this.logedIn = true;
       this.user_id = window.localStorage.getItem('user_id');
       let id = this.post_id || ''
-      fetch('http://127.0.0.1:3000/api/posts/' + id,{
+      fetch(`${this.api}/posts/${id}`,{
         headers: {
           'Content-Type': 'application/json',
           'auth_token': window.localStorage.getItem('authToken') || null
@@ -86,7 +88,7 @@ export default{
         this.comment.user_id = window.localStorage.user_id;
         this.comment.comment_body = e.target.value;
         console.log(this.comment);
-        fetch(`http://127.0.0.1:3000/api/posts/${e.target.dataset.post}/add-comment`,{
+        fetch(`${this.api}/posts/${e.target.dataset.post}/add-comment`,{
           method: 'POST',
           headers:{
             'Content-Type': 'application/json',
@@ -104,7 +106,7 @@ export default{
       }
     },
     like(e){
-      fetch(`http://127.0.0.1:3000/api/posts/${e.target.dataset.post}/like`,{
+      fetch(`${this.api}/posts/${e.target.dataset.post}/like`,{
         method: 'POST',
         headers:{
           'Content-Type': 'application/json',
@@ -116,11 +118,29 @@ export default{
         if(e.target.classList.contains('btn-primary')){
           e.target.classList.remove('btn-primary');
           e.target.classList.add('btn-danger')
+          e.target.textContent = 'unlike'
         } else{
           e.target.classList.add('btn-primary');
           e.target.classList.remove('btn-danger')
+          e.target.textContent = 'like'
+
         }
         this.post.likes = data.likes;
+      })
+    },
+    deletePost(e){
+      let postId = e.target.dataset.post;
+      fetch(`${this.api}/posts/${postId}`,{
+        method: 'delete',
+        headers:{
+          'Content-Type': 'application/json',
+          'auth_token': window.localStorage.getItem('authToken') || null
+        }
+      })
+      .then(res => res.json())
+      .then((data) => {
+        console.log(data);
+        window.location.href= 'http://' + window.location.host;
       })
     }
   }

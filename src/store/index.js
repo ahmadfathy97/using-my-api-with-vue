@@ -5,6 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    api: 'http://127.0.0.1:3000/api'
+  },
+  getters:{
+    api: state => state.api
   },
   mutations: {
   },

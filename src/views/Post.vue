@@ -9,7 +9,7 @@
     </div>
 
     <div v-if="logedIn" class="col-md-12">
-      <onePost :post_id="$route.params.id"/>
+      <onePost :post_id="this.$route.params.id"/>
     </div>
 
   </div>
@@ -29,6 +29,8 @@ export default{
   mounted(){
     if( window.localStorage.getItem('authToken')){
       this.logedIn = true;
+    } else{
+      window.location.href = 'http://' + window.location.host + '/login'
     }
   }
 }

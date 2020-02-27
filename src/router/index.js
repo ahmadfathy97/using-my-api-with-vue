@@ -8,15 +8,9 @@ import Logout from '../views/Logout.vue'
 import AddPost from '../views/AddPost.vue'
 import Post from '../views/Post.vue'
 import Categories from '../views/Categories.vue'
-import addCategory from '../views/addCategory.vue'
+import AddCategory from '../views/addCategory.vue'
 import Category from '../views/Category.vue'
-
-
-
-
-
-
-
+import EditPost from '../views/Edit.vue'
 
 
 Vue.use(VueRouter)
@@ -70,13 +64,17 @@ const routes = [
   {
     path: '/addCategory',
     name: 'addCategory',
-    component: addCategory
-  }
-  ,
+    component: AddCategory
+  },
   {
     path: '/categories/:name',
     name: 'Category',
     component: Category
+  },
+  {
+    path: '/posts/edit/:id',
+    name: 'editPost',
+    component: EditPost
   }
 ]
 
