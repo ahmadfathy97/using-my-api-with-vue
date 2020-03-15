@@ -81,12 +81,15 @@ export default{
   },
   methods:{
     follow(){
+      let date = new Date();
+      let data = {time: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`};
       fetch(`${this.api}/users/${this.$route.params.id}/follow`,{
         method: 'POST',
         headers:{
           'Content-Type': 'application/json',
           'auth_token': window.localStorage.getItem('authToken')
-        }
+        },
+        body: JSON.stringify(data)
       })
       .then(res => res.json())
       .then((data)=>{

@@ -11,6 +11,8 @@ import Categories from '../views/Categories.vue'
 import AddCategory from '../views/addCategory.vue'
 import Category from '../views/Category.vue'
 import EditPost from '../views/Edit.vue'
+import Notis from '../views/Notifications.vue'
+
 
 
 Vue.use(VueRouter)
@@ -75,6 +77,11 @@ const routes = [
     path: '/posts/edit/:id',
     name: 'editPost',
     component: EditPost
+  },
+  {
+    path: '/notifications',
+    name: 'Notifications',
+    component: Notis
   }
 ]
 

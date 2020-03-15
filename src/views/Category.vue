@@ -111,12 +111,15 @@ export default{
       }
     },
     like(e){
+      let date = new Date();
+      let data = {time: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`};
       fetch(`${this.api}/posts/${e.target.dataset.post}/like`,{
         method: 'POST',
         headers:{
           'Content-Type': 'application/json',
           'auth_token': window.localStorage.getItem('authToken') || null
-        }
+        },
+        body: JSON.stringify(data)
       })
       .then(res => res.json())
       .then((data) => {

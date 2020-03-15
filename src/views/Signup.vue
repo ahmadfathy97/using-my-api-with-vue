@@ -5,7 +5,7 @@
         <h1>Sign Up</h1>
       </div>
       <div class="col-md-12">
-        <form class="" @submit="signup($event)">
+        <form class="" @submit.prevent="signup()">
           <div class="form-group">
             <label>username</label>
             <input class="form-control" required type="text" name="username" v-model="data.username" />
@@ -24,7 +24,7 @@
           </div>
           <div class="form-group">
             <label>Image</label>
-            <input class="form-control" type="text" required name="pic" v-model="data.pic" />
+            <input class="form-control" type="file" accept="image/*" ref="pic" required name="pic" @change="handleUploadFile()" />
           </div>
           <div class="form-group">
             <label>Day Of Birth</label>
@@ -64,14 +64,27 @@ export default{
   },
 
   methods:{
-    signup(e){
-      e.preventDefault();
+    handleUploadFile(){
+      this.data.pic = this.$refs.pic.files[0];
+    },
+    signup(){
+      let formData = new FormData();
+      formData.append('pic', this.data.pic);
+      formData.append('username', this.data.username);
+      formData.append('info', this.data.info);
+      formData.append('email', this.data.email);
+      formData.append('dayOfBirth', this.data.dayOfBirth);
+      formData.append('password', this.data.password);
+      for (var value of formData.values()) {
+         console.log(value);
+      }
       fetch(`${this.api}/auth/signup`,{
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Accept': 'application/josn'
         },
-        body: JSON.stringify(this.data)
+        mimeType: 'multipart/form-data',
+        body: formData
       })
       .then(res=> res.json())
       .then((data)=>{
