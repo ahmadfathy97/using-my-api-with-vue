@@ -5,8 +5,8 @@
       <router-link :to="'/user/'+user_id" exec>Profile</router-link>
       <router-link to="/addpost" exec>Add Post</router-link>
       <router-link to="/categories" exec>Categories</router-link>
-      <router-link to="/notifications" exec>Notifications<span class="badge text-danger" v-if="notisNum > 0">{{notisNum || 0}}</span></router-link>
-
+      <router-link to="/notifications" exec>Notifications<span class="badge badge-danger" v-if="notisNum > 0">{{notisNum || 0}}</span></router-link>
+      <input v-model="name" /><router-link class="btn btn-primary" :to="'/search-result/' + name" exec>Search</router-link>
       <router-link to="/logout" exec>logout</router-link>
     </template>
     <template  v-if="!logedIn">
@@ -22,7 +22,8 @@ export default{
     return{
       logedIn: false,
       user_id: '',
-      notisNum: 0
+      notisNum: 0,
+      name
     }
   },
   computed: mapGetters(["api"]),

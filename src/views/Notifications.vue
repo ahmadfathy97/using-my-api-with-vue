@@ -6,25 +6,22 @@
           <h1>Notifications</h1>
         </div>
         <div class="col-md-12" v-for="noti in notifications">
-          <div v-if="noti.noti_type === 'comment'" style="width: 100% !important" class="btn btn-primary m-1" >
-            <a :href="'/posts/' + noti.item_id" class="text-white">
-              <span v-if="noti.readed">♠</span>
+          <div v-if="noti.noti_type === 'comment'" style="width: 100% !important" class="m-1 bg-yellow" :class="{'bg-light': noti.readed}">
+            <a :href="'/posts/' + noti.item_id" class="text-primary">
               <span class=""> {{noti.user_id.username}} </span>
               <span class=""> {{noti.noti_text}} </span>
               <span class=""> {{noti.noti_time}} </span>
             </a>
           </div>
-          <div v-else-if="noti.noti_type === 'follow'" style="width: 100% !important" class="btn btn-info m-1">
-            <a :href="'/user/' + noti.item_id" class="text-white">
-              <span v-if="noti.readed">♠</span>
+          <div v-else-if="noti.noti_type === 'follow'" style="width: 100% !important" class="m-1 bg-yellow" :class="{'bg-light': noti.readed}">
+            <a :href="'/user/' + noti.item_id" class="text-primary">
               <span class=""> {{noti.user_id.username}} </span>
               <span class=""> {{noti.noti_text}} </span>
               <span class=""> {{noti.noti_time}} </span>
             </a>
           </div>
-          <div v-else="noti.noti_type === 'like'" style="width: 100% !important" class="btn btn-danger m-1">
-            <a :href="'/posts/' + noti.item_id" class="text-white">
-              <span v-if="noti.readed">♠</span>
+          <div v-else="noti.noti_type === 'like'" style="width: 100% !important" class="m-1 bg-yellow" :class="{'bg-light': noti.readed}">
+            <a :href="'/posts/' + noti.item_id" class="text-primary">
               <span class=""> {{noti.user_id.username}} </span>
               <span class=""> {{noti.noti_text}} </span>
               <span class=""> {{noti.noti_time}} </span>
@@ -78,5 +75,8 @@ body{
   background: #f6f6f6;
   padding: 10px;
   min-height: 100vh;
+}
+.readed{
+  background: #e9e9e9 !important
 }
 </style>

@@ -17,8 +17,9 @@
           <div class="form-group">
             <label>Category</label>
             <select class="form-control" name="data.category_id" v-model="data.category_id">
+              <option :value="oldCategory.id">{{oldCategory.name}}</option>
               <template id="" v-for="category in categories">
-                <option :value="category._id">{{category.category_name}}</option>
+                <option v-if="oldCategory.id !== category._id" :value="category._id">{{category.category_name}}</option>
               </template>
             </select>
           </div>
@@ -39,7 +40,11 @@ export default{
       data:{
         title:'',
         body: '',
-        category_id: {}
+        category_id: ''
+      },
+      oldCategory:{
+        id: '',
+        name: ''
       },
       logedIn: true,
       categories: []
@@ -58,10 +63,13 @@ export default{
       .then((data)=>{
         console.log(data);
         this.data.title = data.title;
-        this.data.body = data.body
+        this.data.body = data.body;
+        this.oldCategory.id = data.category_id._id;
+        this.data.category_id = data.category_id._id;
+
+        this.oldCategory.name = data.category_id.category_name;
         if(data.user_id._id != window.localStorage.getItem('user_id')){
           window.location.href = 'http://' + window.location.host + '/posts/' + this.$route.params.id;
-
         }
         fetch(`${this.api}/categories/`,{
           headers: {

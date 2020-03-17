@@ -12,6 +12,8 @@ import AddCategory from '../views/addCategory.vue'
 import Category from '../views/Category.vue'
 import EditPost from '../views/Edit.vue'
 import Notis from '../views/Notifications.vue'
+import Search from '../views/SearchResult.vue'
+
 
 
 
@@ -82,6 +84,11 @@ const routes = [
     path: '/notifications',
     name: 'Notifications',
     component: Notis
+  },
+  {
+    path: '/search-result/:name',
+    name: 'search-result',
+    component: Search
   }
 ]
 
