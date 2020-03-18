@@ -171,7 +171,7 @@ export default{
       display: block;
     }
     input.searchBox{
-      width: 120px;
+      width: 105px;
     }
     a{
       display: inline-block;
