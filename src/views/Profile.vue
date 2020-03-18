@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="d-flex flex-column justify-content-center align-items-center" width="100%">
-            <img :src="user.pic" width="300" height="300" alt="">
+            <img :src="user.pic" class="rounded-circle shadow" width="300" height="300" alt="">
             <h1>{{user.username}}</h1>
             <p>{{user.info}}</p>
             <h5>{{user.followers.length}} followers</h5>

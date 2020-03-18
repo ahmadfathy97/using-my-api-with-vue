@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <Navbar />
-    <router-view/>
+    <keep-alive>
+      <router-view/>
+    </keep-alive>
   </div>
 </template>
 <script>
@@ -17,4 +19,8 @@ export default{
 
 <style lang="scss">
 * {padding: 0;margin: 0;box-sizing: border-box;}
+body{
+  padding-top: 80px !important;
+  background: #eee !important;
+}
 </style>

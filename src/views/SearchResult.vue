@@ -5,10 +5,16 @@
         <div class="col-md-12">
           <h1>Search Result</h1>
         </div>
-        <div class="serch-result-container">
-          <div class="" v-for="user in users">
-            {{user}}
-          </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <template v-if="!noResults" v-for="user in users">
+            <a class="row bg-light d-flex align-items-center" :href="'/user/'+ user._id">
+              <img :src="user.pic" style="height: 70px;width:70px;margin: 5px;" />
+              <h2>{{user.username}}</h2>
+            </a>
+          </template>
+          <h2 class="alert-info p-1 rounded border border-primary" v-if="noResults"> {{noResults}}</h2>
         </div>
       </div>
     </div>
@@ -24,6 +30,7 @@ export default{
   data(){
     return{
       users: [],
+      noResults: '',
       user_id: window.localStorage.getItem('user_id')
     }
   },
@@ -39,7 +46,8 @@ export default{
       })
       .then(res => res.json())
       .then((data)=>{
-        this.users = data
+        if(data.noResults) this.noResults = data.noResults
+        else this.users = data.searchResult
       })
       .catch((err)=>{
         console.log(err);
