@@ -9,10 +9,10 @@
       <div class="row">
         <div class="col-md-6">
           <template v-if="!noResults" v-for="user in users">
-            <a class="row bg-light d-flex align-items-center" :href="'/user/'+ user._id">
+            <router-link class="row bg-light d-flex align-items-center" :to="'/user/'+ user._id">
               <img :src="user.pic" style="height: 70px;width:70px;margin: 5px;" />
               <h2>{{user.username}}</h2>
-            </a>
+            </router-link>
           </template>
           <h2 class="alert-info p-1 rounded border border-primary" v-if="noResults"> {{noResults}}</h2>
         </div>

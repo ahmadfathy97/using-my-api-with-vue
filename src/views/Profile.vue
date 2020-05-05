@@ -21,9 +21,9 @@
           <template v-if="posts.length">
             <h2>posts</h2>
             <div class="post" v-for="post in posts">
-              <a :href="'/posts/'+post._id">
+              <router-link :to="'/posts/'+post._id">
                 <h3>{{post.title}}</h3>
-              </a>
+              </router-link>
             </div>
           </template>
         </div>

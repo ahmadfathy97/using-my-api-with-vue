@@ -4,7 +4,7 @@
 
     <div v-if="!logedIn" class="col-md-12">
       <div class="alert-info text-center">
-        <a href="/login">login</a> or <a href="/signup">sign up</a>
+        <router-link to="/login">login</router-link> or <router-link to="/signup">sign up</router-link>
       </div>
     </div>
 

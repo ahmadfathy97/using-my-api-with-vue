@@ -12,7 +12,7 @@
           <span class="card-title bold italic"><router-link :to="'/user/' + post.user_id._id">{{post.user_id.username}}</router-link></span>
           <span class="card-title italic">{{post.created_at}}</span>
           <p> {{post.body}} </p>
-          <a :href="'/categories/' + post.category_id.category_name" class="btn btn-primary">#{{post.category_id.category_name}}</a>
+          <!-- <router-link :to="'/categories/' + post.category_id.category_name" class="btn btn-primary">#{{post.category_id.category_name}}</router-link> -->
 
           <h5 class="likes">
             <span v-if="!post.likes.indexOf(user_id)" class="btn btn-danger" :data-post="post._id" @click="like($event)" role="button">unLike</span>

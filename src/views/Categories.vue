@@ -10,7 +10,7 @@
           <div class="card-body">
             <h5 class="card-title">{{ category.category_name}}</h5>
             <p class="card-text">{{category.category_info}}</p>
-            <a :href="'/categories/'+ category.category_name" class="btn btn-primary">{{ category.category_name}}</a>
+            <router-link :to="'/categories/'+ category.category_name" class="btn btn-primary">{{ category.category_name}}</router-link>
           </div>
         </div>
       </div>
