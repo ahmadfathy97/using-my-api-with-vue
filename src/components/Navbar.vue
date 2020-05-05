@@ -3,13 +3,13 @@
     <template v-if="logedIn">
       <div class="big-screen">
         <router-link to="/" exec>Home</router-link>
-        <router-link :to="'/user/'+user_id" exec>Profile</router-link>
+        <a :href="'/user/'+user_id">Profile</a>
         <router-link to="/addpost" exec>Add Post</router-link>
         <router-link to="/categories" exec>Categories</router-link>
         <router-link to="/notifications" exec>Notifications<span class="badge badge-danger" v-if="notisNum > 0">{{notisNum || 0}}</span></router-link>
         <div class="d-inline-flex align-items-center">
           <input v-model="name" class="searchBox" @keyup="enterKey($event)" />
-          <router-link class="btn btn-light p-1 text-dark" :to="'/search-result/' + name" exec>Search</router-link>
+          <a class="btn btn-light p-1 text-dark" :href="'/search-result/' + name" exec>Search</a>
         </div>
         <router-link class="float-right btn btn-danger" to="/logout" exec>logout</router-link>
       </div>
@@ -20,11 +20,11 @@
             <path fill-rule="evenodd" d="M15 4.5V8l-2-2V4.5a.5.5 0 01.5-.5h1a.5.5 0 01.5.5z" clip-rule="evenodd"/>
           </svg>
         </router-link>
-        <router-link :to="'/user/'+user_id" exec>
+        <a :href="'/user/'+user_id" exec>
           <svg class="bi bi-person" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M15 16s1 0 1-1-1-4-6-4-6 3-6 4 1 1 1 1h10zm-9.995-.944v-.002zM5.022 15h9.956a.274.274 0 00.014-.002l.008-.002c-.001-.246-.154-.986-.832-1.664C13.516 12.68 12.289 12 10 12c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664a1.05 1.05 0 00.022.004zm9.974.056v-.002zM10 9a2 2 0 100-4 2 2 0 000 4zm3-2a3 3 0 11-6 0 3 3 0 016 0z" clip-rule="evenodd"/>
           </svg>
-        </router-link>
+        </a>
         <router-link to="/addpost" exec>
           <svg class="bi bi-pencil" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M13.293 3.293a1 1 0 011.414 0l2 2a1 1 0 010 1.414l-9 9a1 1 0 01-.39.242l-3 1a1 1 0 01-1.266-1.265l1-3a1 1 0 01.242-.391l9-9zM14 4l2 2-9 9-3 1 1-3 9-9z" clip-rule="evenodd"/>
@@ -49,12 +49,12 @@
         </router-link>
         <div class="d-inline-flex align-items-center">
           <input v-model="name" class="searchBox" @keyup="enterKey($event)" />
-          <router-link class="btn btn-light p-1 text-dark" :to="'/search-result/' + name" exec>
+          <a class="btn btn-light p-1 text-dark" :href="'/search-result/' + name" exec>
             <svg class="bi bi-search" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" d="M12.442 12.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z" clip-rule="evenodd"/>
               <path fill-rule="evenodd" d="M8.5 14a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM15 8.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" clip-rule="evenodd"/>
             </svg>
-          </router-link>
+          </a>
         </div>
         <router-link class="float-right btn btn-danger" to="/logout" exec>
           <svg class="bi bi-box-arrow-up-right" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -79,14 +79,14 @@ export default{
       logedIn: false,
       user_id: '',
       notisNum: 0,
-      name
+      name: ''
     }
   },
   computed: mapGetters(["api"]),
   mounted(){
     if(window.localStorage && window.localStorage.getItem('authToken')){
       this.logedIn = true;
-      this.user_id = window.localStorage.user_id;
+      this.user_id = window.localStorage.getItem('user_id');
       setInterval(() => {
         fetch(`http://127.0.0.1:3000/api/users/notifications`,{
           method: 'GET',
@@ -114,7 +114,7 @@ export default{
   methods:{
     enterKey(e){
       if(e.keyCode === 13){
-        this.$router.push('/search-result/'+ e.target.value);
+        window.location.href = `http://${window.location.host}/search-result/${e.target.value}`;
       }
     }
   }

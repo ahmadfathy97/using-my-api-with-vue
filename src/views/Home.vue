@@ -4,7 +4,7 @@
 
       <div class="row">
 
-        <div class="col-md-12">
+        <div v-if="logedIn" class="col-md-12">
           <h1>Latest Posts</h1>
         </div>
 
