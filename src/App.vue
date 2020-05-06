@@ -1,9 +1,8 @@
 <template>
   <div id="app">
     <Navbar />
-    <keep-alive>
-      <router-view/>
-    </keep-alive>
+      <router-view :key="$route.path"/>
+      <!-- important adding key attribute force Vue to create a new instance of the component. -->
   </div>
 </template>
 <script>
