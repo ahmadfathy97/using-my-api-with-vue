@@ -57,11 +57,12 @@ export default{
       }
     }
   },
-  computed: mapGetters(["api"]),
-  mounted(){
-    if(window.localStorage.getItem('authToken')){
-      this.user_id = window.localStorage.getItem('user_id');
-      this.logedIn = true;
+  computed: {
+    ...mapGetters(["api"]),
+    getCat(){
+      if(window.localStorage.getItem('authToken')){
+        this.logedIn = true;
+      }
       let name = this.$route.params.name;
       fetch(`${this.api}/categories/${name}` ,{
         headers: {
@@ -71,12 +72,18 @@ export default{
       })
       .then(res=> res.json())
       .then((data)=>{
+        this.category = {};
+        this.posts = [];
         this.category = data.category;
         this.posts = data.posts;
 
       })
       .catch(err => console.log(err));
-    } else {
+      return;
+    }
+  },
+  mounted(){
+    if(!window.localStorage.getItem('authToken')){
       this.logedIn = false;
       window.location.href = 'http://' + window.location.host + '/login'
     }

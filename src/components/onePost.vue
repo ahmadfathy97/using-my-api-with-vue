@@ -60,10 +60,9 @@ export default{
       }
     }
   },
-  computed: mapGetters(["api"]),
-  props:['post_id'],
-  mounted(){
-    if( window.localStorage.getItem('authToken')){
+  computed: {
+    ...mapGetters(["api"]),
+    grtPost(){
       this.logedIn = true;
       this.user_id = window.localStorage.getItem('user_id');
       let id = this.post_id || ''
@@ -78,7 +77,11 @@ export default{
         this.post = post;
         console.table(post);
       })
+      return;
     }
+  },
+  props:['post_id'],
+  mounted(){
   },
   methods:{
     submitComment(e){

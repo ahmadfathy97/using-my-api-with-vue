@@ -45,9 +45,9 @@ export default{
       user_id: window.localStorage.getItem('user_id')
     }
   },
-  computed: mapGetters(["api"]),
-  mounted(){
-    if(window.localStorage.getItem('authToken')){
+  computed: {
+    ...mapGetters(["api"]),
+    getUser(){
       let id = this.$route.params.id;
       fetch(`${this.api}/users/${id}`, {
         headers:{
@@ -57,6 +57,7 @@ export default{
       })
       .then(res => res.json())
       .then((data)=>{
+        this.user = {};
         this.user = data
       })
       .catch((err)=>{
@@ -74,8 +75,12 @@ export default{
       })
       .catch((err)=>{
         console.log(err);
-      })
-    }else{
+      });
+      return;
+    }
+  },
+  mounted(){
+    if(!window.localStorage.getItem('authToken')){
       window.location.href = 'http://' + window.location.host + '/login'
     }
   },
