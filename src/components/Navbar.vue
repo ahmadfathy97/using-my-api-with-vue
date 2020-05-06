@@ -88,7 +88,7 @@ export default{
       this.logedIn = true;
       this.user_id = window.localStorage.getItem('user_id');
       setInterval(() => {
-        fetch(`${this.api}/api/users/notifications`,{
+        fetch(`${this.api}/users/notifications`,{
           method: 'GET',
           headers: {
             'Content-Type':'application/josn',
