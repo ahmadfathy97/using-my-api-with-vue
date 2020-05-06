@@ -88,7 +88,7 @@ export default{
       this.logedIn = true;
       this.user_id = window.localStorage.getItem('user_id');
       setInterval(() => {
-        fetch(`http://127.0.0.1:3000/api/users/notifications`,{
+        fetch(`${this.api}/api/users/notifications`,{
           method: 'GET',
           headers: {
             'Content-Type':'application/josn',
