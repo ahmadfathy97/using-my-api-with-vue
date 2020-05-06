@@ -65,11 +65,11 @@ const routes = [
     name: 'Categories',
     component: Categories
   },
-  {
-    path: '/addCategory',
-    name: 'addCategory',
-    component: AddCategory
-  },
+  // {
+  //   path: '/addCategory',
+  //   name: 'addCategory',
+  //   component: AddCategory
+  // },
   {
     path: '/categories/:name',
     name: 'Category',
