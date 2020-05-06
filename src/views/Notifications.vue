@@ -7,21 +7,21 @@
         </div>
         <div class="col-md-12" v-for="noti in notifications">
           <div v-if="noti.noti_type === 'comment'" style="width: 100% !important" class="m-1 bg-warning" :class="{'bg-light': noti.readed}">
-            <router-link :to="'/posts/' + noti.item_id" class="text-primary">
+            <router-link :to=="'/posts/' + noti.item_id" class="text-primary">
               <span class=""> {{noti.user_id.username}} </span>
               <span class=""> {{noti.noti_text}} </span>
               <span class=""> {{noti.noti_time}} </span>
             </router-link>
           </div>
           <div v-else-if="noti.noti_type === 'follow'" style="width: 100% !important" class="m-1 bg-warning" :class="{'bg-light': noti.readed}">
-            <router-link :to="'/user/' + noti.item_id" class="text-primary">
+            <router-link :to=="'/user/' + noti.item_id" class="text-primary">
               <span class=""> {{noti.user_id.username}} </span>
               <span class=""> {{noti.noti_text}} </span>
               <span class=""> {{noti.noti_time}} </span>
             </router-link>
           </div>
           <div v-else="noti.noti_type === 'like'" style="width: 100% !important" class="m-1 bg-warning" :class="{'bg-light': noti.readed}">
-            <router-link :to="'/posts/' + noti.item_id" class="text-primary">
+            <router-link :to=="'/posts/' + noti.item_id" class="text-primary">
               <span class=""> {{noti.user_id.username}} </span>
               <span class=""> {{noti.noti_text}} </span>
               <span class=""> {{noti.noti_time}} </span>
