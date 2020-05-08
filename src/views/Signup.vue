@@ -1,11 +1,11 @@
 <template>
   <div class="signup">
-    <div v-if="!logedIn" class="container">
-      <div class="col-md-12">
+    <div v-if="!logedIn" class="container d-flex p-3 align-items-center justify-content-center flex-column">
+      <div class="col-md-12 m-3">
         <h1>Sign Up</h1>
       </div>
-      <div class="col-md-12">
-        <form class="" @submit.prevent="signup()">
+      <div class="col-md-12" >
+        <form class="shadow p-3 bg-light" @submit.prevent="signup()">
           <div class="form-group">
             <label>username</label>
             <input class="form-control" required type="text" name="username" v-model="data.username" />
@@ -59,7 +59,7 @@ export default{
   mounted(){
     if(window.localStorage.getItem('authToken')){
       this.logedIn = true;
-      window.location.href = 'http://' + window.location.host
+      this.$router.history.push('/');
     }
   },
 
@@ -89,7 +89,7 @@ export default{
       .then(res=> res.json())
       .then((data)=>{
         console.log(data);
-        window.location.href = 'http://' + window.location.host + '/login'
+        this.$router.history.push('/');
       })
       .catch(err => console.log(err));
     }
@@ -97,6 +97,8 @@ export default{
 }
 </script>
 
-<style>
-
+<style scoped>
+.container{
+  min-height: 80vh !important
+}
 </style>

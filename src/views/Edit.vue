@@ -69,7 +69,7 @@ export default{
 
         this.oldCategory.name = data.category_id.category_name;
         if(data.user_id._id != window.localStorage.getItem('user_id')){
-          window.location.href = 'http://' + window.location.host + '/posts/' + this.$route.params.id;
+          this.$router.history.push('/posts/' + this.$route.params.id);
         }
         fetch(`${this.api}/categories/`,{
           headers: {
@@ -86,7 +86,7 @@ export default{
       .catch(err => console.log(err));
     } else {
       this.logedIn = false;
-      window.location.href = 'http://' + window.location.host + '/login'
+      this.$router.history.push('/login');
     }
   },
   methods:{
@@ -103,7 +103,7 @@ export default{
       .then(res=> res.json())
       .then((data)=>{
         console.log(data);
-        window.location.href = 'http://' + window.location.host + '/posts/' + this.$route.params.id
+        this.$router.history.push('/posts/' + this.$route.params.id);
       })
       .catch(err => console.log(err));
     }

@@ -2,7 +2,7 @@
 
   <div v-if="logedIn" class="posts">
 
-    <div class="card post" v-for="post in posts"">
+    <div class="card post bg-light" v-for="post in posts"">
       <div class="card-body">
         <h3 class="card-title "><router-link :to="'/posts/' + post._id">{{post.title}}</router-link></h3>
         <span class="card-title bold italic"><router-link :to="'/user/' + post.user_id._id">{{post.user_id.username}}</router-link></span>
@@ -16,8 +16,8 @@
         <a :href="'/categories/' + post.category_id.category_name" class="btn btn-primary">#{{post.category_id.category_name}}</a>
 
         <h5 class="likes">
-          <span v-if="!post.likes.indexOf(user_id)" class="btn btn-danger" :data-post="post._id" @click="like($event)" role="button">unLike</span>
-          <span v-if="post.likes.indexOf(user_id)" class="btn btn-primary" :data-post="post._id" @click="like($event)" role="button">Like</span>
+          <span v-if="post.likes.indexOf(user_id) >= 0" class="btn btn-danger" :data-post="post._id" @click="like($event)" role="button">unLike</span>
+          <span v-if="post.likes.indexOf(user_id) < 0" class="btn btn-primary" :data-post="post._id" @click="like($event)" role="button">Like</span>
 
           <span>{{post.likes.length}}</span>
         </h5>
@@ -30,11 +30,12 @@
           </li>
         </ul>
         <div class="form-group">
-          <input class="form-control"
+          <textarea class="form-control"
                  type="text"
                  name="body"
                  :data-post="post._id"
                  @keyup="submitComment($event)">
+          </textarea>
         </div>
 
       </div>
@@ -200,13 +201,14 @@ p{
 .comments{
   max-height: 300px;
   overflow-y: auto;
-
 }
 .comments li{
-  padding: 5px
+  padding: 5px;
+  background: #e8e8e8;
+  margin-bottom: .25rem;
 }
 .comments li:nth-child(odd){
-  background: #ddd;
+  background: #dbeaf8;
 }
 .comment-body{
   margin: 10px auto

@@ -8,8 +8,8 @@
           <h1>Latest Posts</h1>
         </div>
 
-        <div v-if="!logedIn" class="col-md-12">
-          <div class="alert-info text-center">
+        <div v-if="!logedIn" class="not-loged-in col-md-12 d-flex align-items-center justify-content-center flex-column">
+          <div class="alert-info text-center rounded p-3 shadow h3">
             <router-link to="/login">login</router-link> or <router-link to="/signup">sign up</router-link>
           </div>
         </div>
@@ -41,10 +41,8 @@ export default{
   }
 }
 </script>
-<style >
-body{
-  background: #f6f6f6;
-  padding: 10px;
-  min-height: 100vh;
+<style scoped>
+.not-loged-in{
+  min-height: 80vh
 }
 </style>

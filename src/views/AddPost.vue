@@ -1,10 +1,10 @@
 <template>
   <div class="add-post">
-    <div v-if="logedIn" class="container">
-      <div class="col-md-12">
+    <div v-if="logedIn" class="container d-flex align-items-center justify-content-center flex-column">
+      <div class="col-md-12 m-3">
         <h1>Create Post</h1>
       </div>
-      <div class="col-md-12">
+      <div class="col-md-12 bg-light border shadow p-3">
         <form class="" @submit="post($event)">
           <div class="form-group">
             <label>title</label>
@@ -62,7 +62,7 @@ export default{
       .catch(err => console.log(err));
     } else {
       this.logedIn = false;
-      window.location.href = 'http://' + window.location.host + '/login'
+      this.$router.history.push('/login');
     }
   },
   methods:{
@@ -81,7 +81,7 @@ export default{
       .then(res=> res.json())
       .then((data)=>{
         console.log(data);
-        window.location.href = 'http://' + window.location.host + '/posts/' + data.post_id
+        this.$router.history.push('/posts/' + data.post_id);
       })
       .catch(err => console.log(err));
     }
@@ -89,6 +89,8 @@ export default{
 }
 </script>
 
-<style>
-
+<style scoped>
+.container{
+  min-height: 80vh
+}
 </style>

@@ -114,7 +114,7 @@ export default{
   methods:{
     enterKey(e){
       if(e.keyCode === 13){
-        window.location.href = `http://${window.location.host}/search-result/${e.target.value}`;
+        this.$router.history.push(`/search-result/${e.target.value}`);
       }
     }
   }

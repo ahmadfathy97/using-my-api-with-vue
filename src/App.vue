@@ -20,6 +20,9 @@ export default{
 * {padding: 0;margin: 0;box-sizing: border-box;}
 body{
   padding-top: 80px !important;
-  background: #eee !important;
+  background: #f6f6f6 !important;
+}
+.btn{
+  cursor: pointer !important
 }
 </style>

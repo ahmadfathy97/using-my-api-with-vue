@@ -2,7 +2,7 @@
 
   <div v-if="logedIn" class="posts">
 
-    <div class="card post">
+    <div class="card post bg-light">
       <div class="card-body">
         <h3 class="card-title ">{{post.title}}</h3>
         <span class="card-title bold italic"><router-link :to="'/user/' + post.user_id._id">{{post.user_id.username}}</router-link></span>
@@ -15,8 +15,8 @@
         <a :href="'/categories/' + post.category_id.category_name" class="btn btn-primary">#{{post.category_id.category_name}}</a>
 
         <h5 class="likes">
-          <span v-if="!post.likes.indexOf(user_id) ? true : false" class="btn btn-danger" :data-post="post._id" @click="like($event)" role="button">unLike</span>
-          <span v-if="post.likes.indexOf(user_id) ? true : false" class="btn btn-primary" :data-post="post._id" @click="like($event)" role="button">Like</span>
+          <span v-if="post.likes.indexOf(user_id) >= 0" class="btn btn-danger" :data-post="post._id" @click="like($event)" role="button">unLike</span>
+          <span v-if="post.likes.indexOf(user_id) < 0" class="btn btn-primary" :data-post="post._id" @click="like($event)" role="button">Like</span>
 
           <span>{{post.likes.length}}</span>
         </h5>
@@ -29,11 +29,12 @@
           </li>
         </ul>
         <div class="form-group">
-          <input class="form-control"
+          <textarea class="form-control"
                  type="text"
                  name="body"
                  :data-post="post._id"
                  @keyup="submitComment($event)">
+          </textarea>
         </div>
 
       </div>
@@ -143,7 +144,7 @@ export default{
       .then(res => res.json())
       .then((data) => {
         console.log(data);
-        window.location.href= 'http://' + window.location.host;
+        this.$router.history.push('/');
       })
     }
   }
@@ -151,48 +152,4 @@ export default{
 </script>
 
 <style>
-.post{
-  margin: 15px auto;
-  padding: 10px 3px;
-  background: #eee;
-  box-shadow: 0 3px 7px #222
-}
-.bold{
-  font-weight: 900  !important;
-}
-.italic{
-  font-size: 12px;
-  font-weight: 200;
-  font-style: italic;
-}
-.post span{
-  display: inline-block;
-  margin: 5px;
-}
-li{
-  list-style-type: none !important
-}
-p{
-  margin: 5px;
-  padding: 3px
-}
-.comments{
-  max-height: 300px;
-  overflow-y: auto;
-
-}
-.comments li{
-  padding: 5px
-}
-.comments li:nth-child(odd){
-  background: #ddd;
-}
-.comment-body{
-  margin: 10px auto
-}
-.likes{
-  margin: 30px 10px 5px;
-  color: #0080dd;
-  font-size: 22px;
-}
 </style>

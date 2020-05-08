@@ -1,11 +1,11 @@
 <template>
-  <div class="signup">
-    <div v-if="!logedIn" class="container">
-      <div class="col-md-12">
+  <div class="login">
+    <div v-if="!logedIn" class="container d-flex p-3 align-items-center justify-content-center flex-column">
+      <div class="col-md-12 m-3">
         <h1>Login</h1>
       </div>
       <div class="col-md-12">
-        <form class="" @submit="login($event)">
+        <form class="shadow p-3 bg-light" @submit="login($event)">
           <div class="form-group">
             <div class="alert alert-danger" v-if="error" role="alert">{{this.error}}</div>
           </div>
@@ -43,7 +43,7 @@ import { mapGetters } from 'vuex';
     mounted(){
       if(window.localStorage.getItem('authToken')){
         this.logedIn = true;
-        window.location.href = 'http://' + window.location.host
+        this.$router.history.push('/');
       }
     },
     methods:{
@@ -61,7 +61,7 @@ import { mapGetters } from 'vuex';
           if(window.localStorage && data.auth_token){
             window.localStorage.setItem('authToken', data.auth_token);
             window.localStorage.setItem('user_id', data.id);
-            window.location.href = 'http://' + window.location.host
+            this.$router.history.push('/');
           } else{
             this.error = data.msg;
           }
@@ -75,6 +75,8 @@ import { mapGetters } from 'vuex';
   }
 </script>
 
-<style>
-
+<style scoped>
+.container{
+  min-height: 80vh !important
+}
 </style>

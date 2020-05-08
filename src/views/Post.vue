@@ -30,7 +30,7 @@ export default{
     if( window.localStorage.getItem('authToken')){
       this.logedIn = true;
     } else{
-      window.location.href = 'http://' + window.location.host + '/login'
+      this.$router.history.push('/login');
     }
   }
 }

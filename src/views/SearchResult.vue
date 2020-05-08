@@ -53,7 +53,7 @@ export default{
         console.log(err);
       });
     } else{
-      window.location.href = 'http://' + window.location.host + '/login'
+      this.$router.history.push('/login');
     }
   }
 }
