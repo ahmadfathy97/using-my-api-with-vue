@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navbar />
+    <Navbar :key="$route.path"/>
       <router-view :key="$route.path"/>
       <!-- important adding key attribute force Vue to create a new instance of the component. -->
   </div>
