@@ -23,7 +23,7 @@
           <h2 v-if="post.comments.length > 0">comments</h2>
           <ul v-if="post.comments.length > 0" class="comments">
             <li v-for="comment in post.comments">
-              <h3><a :href="'/user/'+comment.user_id._id">{{comment.user_id.username}}</a></h3>
+              <h3><router-link :to="'/user/'+comment.user_id._id">{{comment.user_id.username}}</router-link></h3>
               <h4 class="comment-time italic">{{comment.comment_time}}</h4>
               <p class="comment-body">{{comment.comment_body}}</p>
             </li>

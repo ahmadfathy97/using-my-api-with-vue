@@ -9,10 +9,10 @@
         <span class="card-title italic">{{post.created_at}}</span>
         <p> {{post.body}} </p>
         <div v-if="post.owner" class="owner">
-          <a class="btn btn-info" :href="'/posts/edit/' + post._id">edit</a>
+          <router-link class="btn btn-info" :to="'/posts/edit/' + post._id">edit</router-link>
           <span class="btn btn-danger" @dblclick="deletePost($event)" :data-post="post._id" >delete</span>
         </div>
-        <a :href="'/categories/' + post.category_id.category_name" class="btn btn-primary">#{{post.category_id.category_name}}</a>
+        <router-link :to="'/categories/' + post.category_id.category_name" class="btn btn-primary">#{{post.category_id.category_name}}</router-link>
 
         <h5 class="likes">
           <span v-if="post.likes.indexOf(user_id) >= 0" class="btn btn-danger" :data-post="post._id" @click="like($event)" role="button">unLike</span>
@@ -23,7 +23,7 @@
         <h2 v-if="post.comments.length > 0">comments</h2>
         <ul v-if="post.comments.length > 0" class="comments">
           <li v-for="comment in post.comments">
-            <h3><a :href="'/user/'+comment.user_id._id">{{comment.user_id.username}}</a></h3>
+            <h3><router-link :to="'/user/'+comment.user_id._id">{{comment.user_id.username}}</router-link></h3>
             <h4 class="comment-time italic">{{comment.comment_time}}</h4>
             <p class="comment-body">{{comment.comment_body}}</p>
           </li>
