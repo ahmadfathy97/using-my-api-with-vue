@@ -14,7 +14,7 @@
             </router-link>
           </div>
           <div v-else-if="noti.noti_type === 'follow'" style="width: 100% !important" class="m-1 bg-warning" :class="{'bg-light': noti.readed}">
-            <router-link :to="'/user/' + noti.item_id" class="text-primary">
+            <router-link :to="'/user/' + noti.user_id._id" class="text-primary">
               <span class=""> {{noti.user_id.username}} </span>
               <span class=""> {{noti.noti_text}} </span>
               <span class=""> {{noti.noti_time}} </span>
