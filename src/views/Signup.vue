@@ -89,7 +89,7 @@ export default{
       .then(res=> res.json())
       .then((data)=>{
         console.log(data);
-        this.$router.history.push('/');
+        this.$router.history.push(`/login?email=${this.data.email}`);
       })
       .catch(err => console.log(err));
     }

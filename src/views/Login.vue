@@ -10,6 +10,11 @@
             <div class="alert alert-danger" v-if="error" role="alert">{{this.error}}</div>
           </div>
           <div class="form-group">
+            <div class="alert alert-success text-center" v-if="query" role="alert">
+              your registration successfully done you can login now
+            </div>
+          </div>
+          <div class="form-group">
             <label>Email</label>
             <input class="form-control" requerd type="email" name="email" v-model="data.email" />
           </div>
@@ -32,11 +37,12 @@ import { mapGetters } from 'vuex';
     data(){
       return{
         data:{
-          email: '',
+          email: this.$route.query.email || '',
           password: ''
         },
         error: '',
-        logedIn: false
+        logedIn: false,
+        query: this.$route.query.email
       }
     },
     computed: mapGetters(["api"]),

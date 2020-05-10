@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <Navbar :key="$route.path"/>
-      <router-view :key="$route.path"/>
-      <!-- important adding key attribute force Vue to create a new instance of the component. -->
+    <Navbar :key="$route.path + Math.random()"/>
+    <router-view :key="$route.path"/>
+    <!-- important adding key attribute force Vue to create a new instance of the component. -->
   </div>
 </template>
 <script>
