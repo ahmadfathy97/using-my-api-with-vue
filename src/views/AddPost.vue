@@ -11,8 +11,14 @@
             <input class="form-control" required type="text" name="title" v-model="data.title" />
           </div>
           <div class="form-group">
-            <label>Body</label>
+            <label>Body
+              <small class="form-text  text-light rounded bg-dark d-inline-block px-2">
+                You can use
+                <a class="m-1 p-0" href="https://www.markdownguide.org/cheat-sheet/" rel="noopener" target="_blank">markdown</a>.
+              </small>
+            </label>
             <textarea class="form-control" required name="info" v-model="data.body"></textarea>
+
           </div>
 
           <div class="form-group">

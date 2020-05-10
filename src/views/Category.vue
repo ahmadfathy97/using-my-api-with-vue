@@ -9,9 +9,9 @@
       <div class="card post bg-light col-md-12" v-for="post in posts"">
         <div class="card-body">
           <h3 class="card-title "><router-link :to="'/posts/' + post._id">{{post.title}}</router-link></h3>
-          <span class="card-title bold italic"><router-link :to="'/user/' + post.user_id._id">{{post.user_id.username}}</router-link></span>
+          <span class="card-title bold italic">by: <router-link :to="'/user/' + post.user_id._id">{{post.user_id.username}}</router-link></span>
           <span class="card-title italic">{{post.created_at}}</span>
-          <p> {{post.body}} </p>
+          <div class="border shadow px-2 py-1" v-html="post.sanitizedHtml"></div>
           <!-- <router-link :to="'/categories/' + post.category_id.category_name" class="btn btn-primary">#{{post.category_id.category_name}}</router-link> -->
 
           <h5 class="likes">

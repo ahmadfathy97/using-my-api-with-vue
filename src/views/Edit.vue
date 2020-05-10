@@ -24,7 +24,7 @@
             </select>
           </div>
           <div class="form-group">
-            <input class="form-control btn btn-primary" type="submit" value="Post" />
+            <input class="form-control btn btn-primary" type="submit" value="Edit" />
           </div>
         </form>
       </div>

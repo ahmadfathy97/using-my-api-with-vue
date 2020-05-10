@@ -25,4 +25,7 @@ body{
 .btn{
   cursor: pointer !important
 }
+.post img{
+  width: 100% !important
+}
 </style>
