@@ -6,29 +6,34 @@
       </div>
       <div class="col-md-12" >
         <form class="shadow p-3 bg-light" @submit.prevent="signup()">
+          <div class="form-group" v-for="err in errors">
+            <div class="alert alert-danger">
+              {{err.msg}}
+            </div>
+          </div>
           <div class="form-group">
             <label>username</label>
-            <input class="form-control" required type="text" name="username" v-model="data.username" />
+            <input class="form-control"  type="text" name="username" v-model="data.username" />
           </div>
           <div class="form-group">
             <label>Email</label>
-            <input class="form-control" required type="email" name="email" v-model="data.email" />
+            <input class="form-control"  type="email" name="email" v-model="data.email" />
           </div>
           <div class="form-group">
             <label>Password</label>
-            <input class="form-control" required type="password" name="password" v-model="data.password" />
+            <input class="form-control"  type="password" name="password" v-model="data.password" />
           </div>
           <div class="form-group">
             <label>Info</label>
-            <textarea class="form-control" required name="info" v-model="data.info"></textarea>
+            <textarea class="form-control"  name="info" v-model="data.info"></textarea>
           </div>
           <div class="form-group">
             <label>Image</label>
-            <input class="form-control" type="file" accept="image/*" ref="pic" required name="pic" @change="handleUploadFile()" />
+            <input class="form-control" type="file" accept="image/*" ref="pic"  name="pic" @change="handleUploadFile()" />
           </div>
           <div class="form-group">
             <label>Day Of Birth</label>
-            <input class="form-control" type="date" required name="dayOfBirth" v-model="data.dayOfBirth" />
+            <input class="form-control" type="date"  name="dayOfBirth" v-model="data.dayOfBirth" />
           </div>
           <div class="form-group">
             <input class="form-control btn btn-primary" type="submit" value="Sign up" />
@@ -52,7 +57,8 @@ export default{
         pic: '',
         dayOfBirth: ''
       },
-      logedIn: false
+      logedIn: false,
+      errors: []
     }
   },
   computed: mapGetters(["api"]),
@@ -88,8 +94,12 @@ export default{
       })
       .then(res=> res.json())
       .then((data)=>{
-        console.log(data);
-        this.$router.history.push(`/login?email=${this.data.email}`);
+        if(data && data.success){
+          console.log(data);
+          this.$router.history.push(`/verify?email=${this.data.email}`);
+        } else{
+          this.errors = data.errors
+        }
       })
       .catch(err => console.log(err));
     }
