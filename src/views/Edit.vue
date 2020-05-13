@@ -1,10 +1,10 @@
 <template>
   <div class="add-post">
-    <div v-if="logedIn" class="container">
+    <div v-if="logedIn" class="container d-flex align-items-center justify-content-center flex-column">
       <div class="col-md-12">
         <h1>edit Post</h1>
       </div>
-      <div class="col-md-12">
+      <div class="col-md-12 bg-light border shadow p-3">
         <form class="" @submit="editPost($event)">
           <div class="form-group">
             <label>title</label>
@@ -24,16 +24,22 @@
             </select>
           </div>
           <div class="form-group">
-            <input class="form-control btn btn-primary" type="submit" value="Edit" />
+            <input class="btn btn-primary m-2" type="submit" value="Edit" />
+            <input class="btn btn-secondary m-2" type="button" @click="Preview()" value="preview" />
           </div>
         </form>
+      </div>
+      <div v-if="preview" class="post p-3 preview">
+        <button v-if="preview" class="btn btn-danger close-preview m-2 position-absolute" @click="preview= false">X</button>
+        <div v-html="previewContent"></div>
       </div>
     </div>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
-
+import marked from 'marked';
+import DOMPurify from 'dompurify';
 export default{
   data(){
     return{
@@ -47,7 +53,9 @@ export default{
         name: ''
       },
       logedIn: true,
-      categories: []
+      categories: [],
+      preview: false,
+      previewContent: ''
     }
   },
   computed: mapGetters(["api"]),
@@ -106,11 +114,20 @@ export default{
         this.$router.history.push('/posts/' + this.$route.params.id);
       })
       .catch(err => console.log(err));
+    },
+    Preview(){
+      this.previewContent = DOMPurify.sanitize(marked(this.data.body));
+      console.log(this.previewContent);
+      if(this.previewContent.length){
+        this.preview = true
+      }
     }
   }
 }
 </script>
 
 <style>
-
+.add-post.container{
+  min-height: 80vh
+}
 </style>

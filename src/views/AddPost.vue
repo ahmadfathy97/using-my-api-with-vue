@@ -30,15 +30,22 @@
             </select>
           </div>
           <div class="form-group">
-            <input class="form-control btn btn-primary" type="submit" value="Post" />
+            <input class="btn btn-primary m-2" type="submit" value="Post" />
+            <input class="btn btn-secondary m-2" type="button" @click="Preview()" value="preview" />
           </div>
         </form>
+      </div>
+      <div v-if="preview" class="post p-3 preview">
+        <button v-if="preview" class="btn btn-danger close-preview m-2 position-absolute" @click="preview= false">X</button>
+        <div v-html="previewContent"></div>
       </div>
     </div>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import marked from 'marked';
+import DOMPurify from 'dompurify';
 export default{
   data(){
     return{
@@ -49,7 +56,9 @@ export default{
         created_at: ''
       },
       logedIn: true,
-      categories: []
+      categories: [],
+      preview: false,
+      previewContent: ''
     }
   },
   computed: mapGetters(["api"]),
@@ -90,13 +99,35 @@ export default{
         this.$router.history.push('/posts/' + data.post_id);
       })
       .catch(err => console.log(err));
+    },
+    Preview(){
+      this.previewContent = DOMPurify.sanitize(marked(this.data.body));
+      console.log(this.previewContent);
+      if(this.previewContent.length){
+        this.preview = true
+      }
     }
   }
 }
 </script>
 
-<style scoped>
-.container{
+<style>
+.add-post.container{
   min-height: 80vh
+}
+.preview{
+  height: 80vh;
+  width: 90%;
+  position: absolute;
+  margin: 20px auto;
+  z-index: 999999999999;
+}
+.preview div{
+  height: 100%;
+  overflow: auto;
+}
+.close-preview {
+  right: 0;
+  top: 0
 }
 </style>
