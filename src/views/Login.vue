@@ -23,6 +23,9 @@
             <input class="form-control" required type="password" name="password" v-model="data.password" />
           </div>
           <div class="form-group">
+            <label><router-link to="/forget-password">forget your password ?</router-link></label>
+          </div>
+          <div class="form-group">
             <input class="form-control btn btn-primary" type="submit" value="Login" />
           </div>
         </form>

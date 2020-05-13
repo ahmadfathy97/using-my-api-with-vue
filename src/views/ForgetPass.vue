@@ -1,20 +1,21 @@
 <template>
-  <div class="verify">
+  <div class="forget-password">
     <div v-if="!logedIn" class="container d-flex p-3 align-items-center justify-content-center flex-column">
       <div class="col-md-12 m-3">
-        <h1>verify your account</h1>
+        <h1>Reset your password</h1>
       </div>
       <div class="col-md-12">
-        <form class="shadow p-3 bg-light" @submit="verify($event)">
+        <form class="shadow p-3 bg-light" @submit="sendCode($event)">
           <div class="form-group">
             <div class="alert alert-danger" v-if="error" role="alert">{{this.error}}</div>
+            <div class="alert alert-success" v-if="msg" role="alert">{{this.msg}}</div>
           </div>
-          <h3>check you email and enter the code</h3>
-          <div class="form-group">
-            <input class="form-control" required name="verificationNum" v-model="data.verificationNum" />
+          <h3 v-if="!msg" >enter your email</h3>
+          <div v-if="!msg" class="form-group">
+            <input class="form-control" required name="email" v-model="data.email" />
           </div>
-          <div class="form-group">
-            <input class="form-control btn btn-primary" type="submit" value="Verify" />
+          <div v-if="!msg" class="form-group">
+            <input class="form-control btn btn-primary" type="submit" value="send" />
           </div>
         </form>
       </div>
@@ -28,11 +29,11 @@ import { mapGetters } from 'vuex';
     data(){
       return{
         data:{
-          verificationNum: ''
+          email: ''
         },
         error: '',
-        logedIn: false,
-        query: this.$route.query.email
+        msg:'',
+        logedIn: false
       }
     },
     computed: mapGetters(["api"]),
@@ -43,9 +44,9 @@ import { mapGetters } from 'vuex';
       }
     },
     methods:{
-      verify(e){
+      sendCode(e){
         e.preventDefault();
-        fetch(`${this.api}/users/verify/?email=${this.query}`,{
+        fetch(`${this.api}/auth/forget-password/`,{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -55,8 +56,10 @@ import { mapGetters } from 'vuex';
         .then(res => res.json())
         .then((data)=>{
           if(data && data.success){
-            this.$router.history.push(`/login?email=${this.query}`);
+            this.error = '';
+            this.msg = data.msg;
           } else{
+            this.msg = '';
             this.error = data.msg;
           }
         })

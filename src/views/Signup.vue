@@ -13,27 +13,27 @@
           </div>
           <div class="form-group">
             <label>username</label>
-            <input class="form-control"  type="text" name="username" v-model="data.username" />
+            <input class="form-control" required type="text" name="username" v-model="data.username" />
           </div>
           <div class="form-group">
             <label>Email</label>
-            <input class="form-control"  type="email" name="email" v-model="data.email" />
+            <input class="form-control" required type="email" name="email" v-model="data.email" />
           </div>
           <div class="form-group">
             <label>Password</label>
-            <input class="form-control"  type="password" name="password" v-model="data.password" />
+            <input class="form-control" required type="password" name="password" v-model="data.password" />
           </div>
           <div class="form-group">
             <label>Info</label>
-            <textarea class="form-control"  name="info" v-model="data.info"></textarea>
+            <textarea class="form-control" required name="info" v-model="data.info"></textarea>
           </div>
           <div class="form-group">
             <label>Image</label>
-            <input class="form-control" type="file" accept="image/*" ref="pic"  name="pic" @change="handleUploadFile()" />
+            <input class="form-control" required type="file" accept="image/*" ref="pic" name="pic" @change="handleUploadFile()" />
           </div>
           <div class="form-group">
             <label>Day Of Birth</label>
-            <input class="form-control" type="date"  name="dayOfBirth" v-model="data.dayOfBirth" />
+            <input class="form-control" required type="date"  name="dayOfBirth" v-model="data.dayOfBirth" />
           </div>
           <div class="form-group">
             <input class="form-control btn btn-primary" type="submit" value="Sign up" />

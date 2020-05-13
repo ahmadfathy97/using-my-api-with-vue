@@ -14,6 +14,9 @@ import EditPost from '../views/Edit.vue'
 import Notis from '../views/Notifications.vue'
 import Search from '../views/SearchResult.vue'
 import Verify from '../views/Verify.vue'
+import ForgetPass from '../views/ForgetPass.vue'
+import ResetPass from '../views/ResetPass.vue'
+
 
 Vue.use(VueRouter)
 
@@ -92,6 +95,16 @@ const routes = [
     path: '/verify',
     name: 'Verify',
     component: Verify
+  },
+  {
+    path: '/forget-password',
+    name: 'forget-passord',
+    component: ForgetPass
+  },
+  {
+    path: '/reset-password/:hash',
+    name: 'reset-password',
+    component: ResetPass
   }
 ]
 

@@ -29,13 +29,18 @@ body{
   width: 100% !important
 }
 .post ul li{
-  margin: 15px;
+  margin-left: 15px;
   list-style-type: disc !important;
 }
 .post ol li{
-  margin: 15px;
+  margin-left: 15px;
   list-style-type: decimal !important;
 }
+.post .comments li{
+  margin: 5px;
+  list-style-type: none !important;
+}
+
 .post pre{
   background: #222;
   color: #f9f9f9;

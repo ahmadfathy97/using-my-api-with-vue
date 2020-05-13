@@ -1,20 +1,26 @@
+8e7a915264670a8df808b0d0763fe3fccd2969d6b3b152a6f6ae7fea48c5d3db
 <template>
-  <div class="verify">
+  <div class="reset-password">
     <div v-if="!logedIn" class="container d-flex p-3 align-items-center justify-content-center flex-column">
       <div class="col-md-12 m-3">
-        <h1>verify your account</h1>
+        <h1>enter your new password</h1>
       </div>
       <div class="col-md-12">
-        <form class="shadow p-3 bg-light" @submit="verify($event)">
+        <form class="shadow p-3 bg-light" @submit="sendCode($event)">
           <div class="form-group">
             <div class="alert alert-danger" v-if="error" role="alert">{{this.error}}</div>
+            <div class="alert alert-success" v-if="msg" role="alert">{{this.msg}}</div>
           </div>
-          <h3>check you email and enter the code</h3>
-          <div class="form-group">
-            <input class="form-control" required name="verificationNum" v-model="data.verificationNum" />
+          <div v-if="!msg" class="form-group">
+            <label>password</label>
+            <input class="form-control" type="password" required name="password" v-model="data.password" />
           </div>
-          <div class="form-group">
-            <input class="form-control btn btn-primary" type="submit" value="Verify" />
+          <div v-if="!msg" class="form-group">
+            <label>confirm password</label>
+            <input class="form-control" type="password" required name="confirmPassword" v-model="data.confirmPassword" />
+          </div>
+          <div v-if="!msg" class="form-group">
+            <input class="form-control btn btn-primary" type="submit" value="send" />
           </div>
         </form>
       </div>
@@ -28,11 +34,13 @@ import { mapGetters } from 'vuex';
     data(){
       return{
         data:{
-          verificationNum: ''
+          password: '',
+          confirmPassword: ''
         },
         error: '',
+        msg:'',
         logedIn: false,
-        query: this.$route.query.email
+        hash: this.$route.params.hash
       }
     },
     computed: mapGetters(["api"]),
@@ -43,9 +51,9 @@ import { mapGetters } from 'vuex';
       }
     },
     methods:{
-      verify(e){
+      sendCode(e){
         e.preventDefault();
-        fetch(`${this.api}/users/verify/?email=${this.query}`,{
+        fetch(`${this.api}/auth/reset-password/${this.hash}`,{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -55,8 +63,10 @@ import { mapGetters } from 'vuex';
         .then(res => res.json())
         .then((data)=>{
           if(data && data.success){
-            this.$router.history.push(`/login?email=${this.query}`);
+            this.error = '';
+            this.msg = data.msg;
           } else{
+            this.msg = '';
             this.error = data.msg;
           }
         })

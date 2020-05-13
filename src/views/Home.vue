@@ -35,6 +35,9 @@ export default{
     allPosts
   },
   mounted(){
+    if(this.$route.query.resetpassword){
+      this.$router.history.push(`/reset-password/${this.$route.query.hash}`)
+    }
     if( window.localStorage.getItem('authToken')){
       this.logedIn = true;
     }
