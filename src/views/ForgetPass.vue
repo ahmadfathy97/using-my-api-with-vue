@@ -30,7 +30,7 @@ import { mapGetters } from 'vuex';
       return{
         data:{
           email: '',
-          redirectLink: `http://${window.location.host}`
+          redirectLink: `https://${window.location.host}`
         },
         error: '',
         msg:'',
