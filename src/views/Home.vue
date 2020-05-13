@@ -15,7 +15,7 @@
         </div>
 
         <div v-if="logedIn" class="col-md-12">
-          <allPosts />
+          <allPosts :posts="posts"/>
         </div>
 
       </div>
@@ -24,13 +24,16 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import allPosts from '../components/allPosts.vue';
 export default{
   data(){
     return{
-      logedIn: false
+      logedIn: false,
+      posts: []
     }
   },
+  computed: mapGetters(["api"]),
   components: {
     allPosts
   },
@@ -40,6 +43,20 @@ export default{
     }
     if( window.localStorage.getItem('authToken')){
       this.logedIn = true;
+      fetch(`${this.api}/posts/latest`,{
+        headers: {
+          'Content-Type': 'application/json',
+          'auth_token': window.localStorage.getItem('authToken') || null
+        },
+      })
+      .then(res => res.json())
+      .then(posts => {
+        this.posts = posts;
+        console.table(posts);
+      })
+      .catch( err =>{
+        console.log(err);
+      })
     }
   }
 }

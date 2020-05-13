@@ -1,7 +1,9 @@
 <template>
 
-  <div v-if="logedIn" class="posts">
-
+  <div class="posts">
+    <div v-if="!posts.length">
+      there is no posts yet...
+    </div>
     <div class="card post bg-light" v-for="post in posts"">
       <div class="card-body">
         <h3 class="card-title "><router-link :to="'/posts/' + post._id">{{post.title}}</router-link></h3>
@@ -45,7 +47,6 @@
 
 </template>
 
-
 <script>
 import { mapGetters } from 'vuex';
 export default{
@@ -53,7 +54,6 @@ export default{
     return{
       logedIn: false,
       user_id:'',
-      posts: [],
       comment:{
         user_id: window.localStorage.user_id,
         comment_body: '',
@@ -62,23 +62,7 @@ export default{
     }
   },
   computed: mapGetters(["api"]),
-  mounted(){
-    if( window.localStorage.getItem('authToken')){
-      this.logedIn = true;
-      this.user_id = window.localStorage.getItem('user_id');
-      fetch( `${this.api}/posts/latest`,{
-        headers: {
-          'Content-Type': 'application/json',
-          'auth_token': window.localStorage.getItem('authToken') || null
-        },
-      })
-      .then(res => res.json())
-      .then(posts => {
-        this.posts = posts;
-        console.table(posts);
-      })
-    }
-  },
+  props: ['posts'],
   methods:{
     submitComment(e){
       if(e.keyCode == 13){
