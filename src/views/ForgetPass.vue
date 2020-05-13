@@ -29,7 +29,8 @@ import { mapGetters } from 'vuex';
     data(){
       return{
         data:{
-          email: ''
+          email: '',
+          redirectLink: `http://${window.location.host}`
         },
         error: '',
         msg:'',
