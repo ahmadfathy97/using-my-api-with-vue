@@ -15,9 +15,7 @@
         </div>
 
         <div v-if="logedIn" class="col-md-12">
-          <template v-for="post in posts">
-            <onePost :post="post"/>
-          </template>
+          <allPosts :posts="posts" />
         </div>
 
       </div>
@@ -27,7 +25,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import onePost from '../components/onePost.vue';
+import allPosts from '../components/allPosts.vue';
 export default{
   data(){
     return{
@@ -37,7 +35,7 @@ export default{
   },
   computed: mapGetters(["api"]),
   components: {
-    onePost
+    allPosts
   },
   mounted(){
     if(this.$route.query.resetpassword){
@@ -60,6 +58,12 @@ export default{
         console.log(err);
       })
     }
+  },
+  deletePost(id){
+    console.log(id, 454644646464646486484897489899898989);
+    this.posts = this.posts.filter(post=>{
+      return post._id !== id
+    })
   }
 }
 </script>

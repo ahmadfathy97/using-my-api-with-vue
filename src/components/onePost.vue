@@ -4,7 +4,7 @@
 
     <div class="card post bg-light">
       <div class="card-body">
-        <h3 class="card-title ">{{post.title}}</h3>
+        <h3 class="card-title text-center">{{post.title}}</h3>
         <span class="card-title bold italic">by: <router-link :to="'/user/' + post.user_id._id">{{post.user_id.username}}</router-link></span>
         <span class="card-title italic">{{post.created_at}}</span>
         <div class="border shadow px-2 py-1" :class="{rtl : post.dir == 'rtl'}" v-html="post.sanitizedHtml"></div>

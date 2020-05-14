@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
 
   <div class="posts">
     <div v-if="!posts.length">
@@ -6,10 +6,10 @@
     </div>
     <div class="card post bg-light" v-for="post in posts"">
       <div class="card-body">
-        <h3 class="card-title "><router-link :to="'/posts/' + post._id">{{post.title}}</router-link></h3>
+        <h3 class="card-title text-center"><router-link :to="'/posts/' + post._id">{{post.title}}</router-link></h3>
         <span class="card-title bold italic">by: <router-link :to="'/user/' + post.user_id._id">{{post.user_id.username}}</router-link></span>
         <span class="card-title italic">{{post.created_at}}</span>
-        <div class="border shadow px-2 py-1" v-html="post.sanitizedHtml"></div>
+        <div class="border shadow px-2 py-1" :class="{rtl : post.dir == 'rtl'}" v-html="post.sanitizedHtml"></div>
         <div v-if="post.owner" class="owner">
           <router-link class="btn btn-info" :to="'/posts/edit/' + post._id">edit</router-link>
           <span class="btn btn-danger delete-btn" @dblclick="deletePost($event)" :data-post="post._id" >delete</span>
@@ -259,4 +259,4 @@ p{
 .delete-btn:hover::before{
   display: block
 }
-</style> -->
+</style>

@@ -6,15 +6,15 @@
         <h5>{{ category.category_name}}</h5>
         <p>{{category.category_info}}</p>
       </div>
-      <template v-for="post in posts">
-        <onePost :post="post" />
-      </template>
+      <div class="col-md-12">
+        <allPosts :posts="posts" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import onePost from '../components/onePost.vue';
+import allPosts from '../components/allPosts.vue';
 import { mapGetters } from 'vuex';
 
 export default{
@@ -31,7 +31,7 @@ export default{
     }
   },
   components: {
-    onePost
+    allPosts
   },
   computed: mapGetters(["api"]),
   mounted(){
