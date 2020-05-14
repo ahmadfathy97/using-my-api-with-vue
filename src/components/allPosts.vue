@@ -12,7 +12,7 @@
         <div class="border shadow px-2 py-1" v-html="post.sanitizedHtml"></div>
         <div v-if="post.owner" class="owner">
           <router-link class="btn btn-info" :to="'/posts/edit/' + post._id">edit</router-link>
-          <span class="btn btn-danger" @dblclick="deletePost($event)" :data-post="post._id" >delete</span>
+          <span class="btn btn-danger delete-btn" @dblclick="deletePost($event)" :data-post="post._id" >delete</span>
 
         </div>
         <router-link :to="'/categories/' + post.category_id.category_name" class="btn btn-primary">#{{post.category_id.category_name}}</router-link>
@@ -26,6 +26,10 @@
         <h2 v-if="post.comments.length > 0">comments</h2>
         <ul v-if="post.comments.length > 0" class="comments">
           <li v-for="comment in post.comments">
+            <button v-if="comment.user_id._id === user_id"
+                    class="btn btn-danger delete-comment"
+                    :data-comment="comment._id"
+                    @dblclick="deleteComment($event)">X</button>
             <h3><router-link :to="'/user/'+comment.user_id._id">{{comment.user_id.username}}</router-link></h3>
             <h4 class="comment-time italic">{{comment.comment_time}}</h4>
             <p class="comment-body">{{comment.comment_body}}</p>
@@ -53,9 +57,9 @@ export default{
   data(){
     return{
       logedIn: false,
-      user_id:'',
+      user_id:window.localStorage.getItem('user_id'),
       comment:{
-        user_id: window.localStorage.user_id,
+        user_id: window.localStorage.getItem('user_id'),
         comment_body: '',
         comment_time: ''
       }
@@ -142,6 +146,22 @@ export default{
         console.log(this.posts.length, this.postsAfterDel);
         this.posts = postsAfterDel;
       })
+    },
+    deleteComment(e){
+      let commentId = e.target.dataset.comment;
+      console.log(commentId);
+      fetch(`${this.api}/comments/${commentId}`,{
+        method: 'delete',
+        headers:{
+          'Content-Type': 'application/json',
+          'auth_token': window.localStorage.getItem('authToken') || null
+        }
+      })
+      .then(res => res.json())
+      .then((data) => {
+        console.log(data);
+        e.target.parentElement.style.display = 'none';
+      })
     }
   }
 }
@@ -190,6 +210,7 @@ p{
   padding: 5px;
   background: #e8e8e8;
   margin-bottom: .25rem;
+  position: relative;
 }
 .comments li:nth-child(odd){
   background: #dbeaf8;
@@ -197,9 +218,45 @@ p{
 .comment-body{
   margin: 10px auto
 }
+.delete-comment{
+  position: absolute;
+  top: 2px;right:2px;
+  padding: 2px 6px;
+}
 .likes{
   margin: 30px 10px 5px;
   color: #0080dd;
   font-size: 22px;
+}
+.delete-btn{
+  position: relative;
+}
+.delete-btn::after{
+  display: none;
+  content: 'double click to delete';
+  padding: 5px;
+  background: #222;
+  color: #fff;
+  border-radius: 5px;
+  position: absolute;
+  top: 50%;left: -200%;
+  transform: translate(0, -50%);
+  font-size: 12px !important;
+}
+.delete-btn::before{
+  display: none;
+  content: '';
+  width: 0;height: 0;
+  border: 10px solid transparent;
+  border-right-color: #000;
+  position: absolute;
+  top: 50%;left: -22px;
+  transform: translate(0, -50%);
+}
+.delete-btn:hover::after{
+  display: block
+}
+.delete-btn:hover::before{
+  display: block
 }
 </style>

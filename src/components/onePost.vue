@@ -10,7 +10,7 @@
         <div class="border shadow px-2 py-1" v-html="post.sanitizedHtml"></div>
         <div v-if="post.owner" class="owner">
           <router-link class="btn btn-info" :to="'/posts/edit/' + post._id">edit</router-link>
-          <span class="btn btn-danger" @dblclick="deletePost($event)" :data-post="post._id" >delete</span>
+          <span class="btn btn-danger delete-btn" @dblclick="deletePost($event)" :data-post="post._id" >delete</span>
         </div>
         <router-link :to="'/categories/' + post.category_id.category_name" class="btn btn-primary">#{{post.category_id.category_name}}</router-link>
 
@@ -21,8 +21,12 @@
           <span>{{post.likes.length}}</span>
         </h5>
         <h2 v-if="post.comments.length > 0">comments</h2>
-        <ul v-if="post.comments.length > 0" class="comments">
+        <ul ref="commentList" v-show="post.comments.length > 0" class="comments">
           <li v-for="comment in post.comments">
+            <button v-if="comment.user_id._id === user_id"
+                    class="btn btn-danger delete-comment"
+                    :data-comment="comment._id"
+                    @dblclick="deleteComment($event)">X</button>
             <h3><router-link :to="'/user/'+comment.user_id._id">{{comment.user_id.username}}</router-link></h3>
             <h4 class="comment-time italic">{{comment.comment_time}}</h4>
             <p class="comment-body">{{comment.comment_body}}</p>
@@ -55,7 +59,7 @@ export default{
       user_id: '',
       post: {},
       comment:{
-        user_id: window.localStorage.user_id,
+        user_id: window.localStorage.getItem('user_id'),
         comment_body: '',
         comment_time: ''
       }
@@ -145,6 +149,24 @@ export default{
       .then((data) => {
         console.log(data);
         this.$router.history.push('/');
+      })
+    },
+    deleteComment(e){
+      let commentId = e.target.dataset.comment;
+      console.log(commentId);
+      fetch(`${this.api}/comments/${commentId}`,{
+        method: 'delete',
+        headers:{
+          'Content-Type': 'application/json',
+          'auth_token': window.localStorage.getItem('authToken') || null
+        }
+      })
+      .then(res => res.json())
+      .then((data) => {
+        console.log(data);
+        this.post.comments = this.post.comments.filter((comment)=>{
+          return commentId !== comment._id
+        })
       })
     }
   }

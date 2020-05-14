@@ -12,13 +12,13 @@
               birthday: {{user.dayOfBirth}}
             </p>
             <div class="m-2 text-light">
-              <span class="m-1 bg-secondary p-2 rounded">followers: {{user.followers.length}}</span>
-              <span class="m-1 bg-dark p-2 rounded">following: {{user.following.length}} </span>
+              <span class="m-1 bg-secondary p-2 rounded">followers: {{user.followers ? user.followers.length : 0}}</span>
+              <span class="m-1 bg-dark p-2 rounded">following: {{user.following ? user.following.length : 0}} </span>
             </div>
 
             <div v-if="this.$route.params.id != user_id">
-              <span v-if="!user.followers.indexOf(user_id)" class="btn btn-danger" @click="follow()">unfollow</span>
-              <span v-if="user.followers.indexOf(user_id)" class="btn btn-primary" @click="follow()">follow</span>
+              <span v-if="user.followers ? (user.followers.indexOf(user_id) >= 0 ? true : false) : false" class="btn btn-danger" @click="follow()">unfollow</span>
+              <span v-if="user.followers ? (user.followers.indexOf(user_id) < 0 ? true : false): false" class="btn btn-primary" @click="follow()">follow</span>
             </div>
           </div>
         </div>
