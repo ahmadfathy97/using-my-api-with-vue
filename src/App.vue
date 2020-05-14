@@ -29,11 +29,11 @@ body{
   width: 100% !important
 }
 .post ul li{
-  margin-left: 15px;
+  margin: 2px 20px 2px 20px;
   list-style-type: disc !important;
 }
 .post ol li{
-  margin-left: 15px;
+  margin: 2px 20px 2px 20px;
   list-style-type: decimal !important;
 }
 .post .comments li{

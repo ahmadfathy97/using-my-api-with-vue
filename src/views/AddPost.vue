@@ -22,6 +22,14 @@
           </div>
 
           <div class="form-group">
+            <label class="d-block">post direction</label>
+            <input class="p-2 m-2" required type="radio" id="rtl" name="dir" value="rtl" v-model="data.dir" />
+            <label for="rtl">right to left</label>
+            <input class="p-2 m-2" required type="radio" id="ltr" name="dir" value="ltr" v-model="data.dir" />
+            <label for="ltr">left to right</label>
+          </div>
+
+          <div class="form-group">
             <label>Category</label>
             <select class="form-control" name="data.category_id" v-model="data.category_id">
               <template id="" v-for="category in categories">
@@ -35,8 +43,8 @@
           </div>
         </form>
       </div>
-      <div v-if="preview" class="post p-3 preview">
-        <button v-if="preview" class="btn btn-danger close-preview m-2 position-absolute" @click="preview= false">X</button>
+      <div v-if="preview" class="post p-3 preview" :class="{rtl: data.dir == 'rtl'}">
+        <button v-if="preview" class="btn btn-danger close-preview position-absolute" @click="preview= false">X</button>
         <div v-html="previewContent"></div>
       </div>
     </div>
@@ -53,7 +61,8 @@ export default{
         title:'',
         body: '',
         category_id: '',
-        created_at: ''
+        created_at: '',
+        dir: 'ltr'
       },
       logedIn: true,
       categories: [],
@@ -118,9 +127,14 @@ export default{
 .preview{
   height: 80vh;
   width: 90%;
+  padding: 5px 15px;
   position: absolute;
   margin: 20px auto;
   z-index: 999999999999;
+}
+.preview.rtl{
+  direction: rtl !important;
+  text-align: right !important;
 }
 .preview div{
   height: 100%;

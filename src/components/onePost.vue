@@ -1,13 +1,13 @@
 <template>
 
-  <div v-if="logedIn" class="posts">
+  <div>
 
     <div class="card post bg-light">
       <div class="card-body">
         <h3 class="card-title ">{{post.title}}</h3>
         <span class="card-title bold italic">by: <router-link :to="'/user/' + post.user_id._id">{{post.user_id.username}}</router-link></span>
         <span class="card-title italic">{{post.created_at}}</span>
-        <div class="border shadow px-2 py-1" v-html="post.sanitizedHtml"></div>
+        <div class="border shadow px-2 py-1" :class="{rtl : post.dir == 'rtl'}" v-html="post.sanitizedHtml"></div>
         <div v-if="post.owner" class="owner">
           <router-link class="btn btn-info" :to="'/posts/edit/' + post._id">edit</router-link>
           <span class="btn btn-danger delete-btn" @dblclick="deletePost($event)" :data-post="post._id" >delete</span>
@@ -56,8 +56,7 @@ export default{
   data(){
     return{
       logedIn: false,
-      user_id: '',
-      post: {},
+      user_id: window.localStorage.getItem('user_id'),
       comment:{
         user_id: window.localStorage.getItem('user_id'),
         comment_body: '',
@@ -66,31 +65,13 @@ export default{
     }
   },
   computed: mapGetters(["api"]),
-  props:['post_id'],
-  mounted(){
-    if( window.localStorage.getItem('authToken')){
-      this.logedIn = true;
-      this.user_id = window.localStorage.getItem('user_id');
-      let id = this.post_id || ''
-      fetch(`${this.api}/posts/${id}`,{
-        headers: {
-          'Content-Type': 'application/json',
-          'auth_token': window.localStorage.getItem('authToken') || null
-        },
-      })
-      .then(res => res.json())
-      .then(post => {
-        this.post = post;
-        console.table(post);
-      })
-    }
-  },
+  props:['post'],
   methods:{
     submitComment(e){
       if(e.keyCode == 13){
         let date = new Date();
         this.comment.comment_time = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-        this.comment.user_id = window.localStorage.user_id;
+        this.comment.user_id = window.localStorage.getItem('user_id');
         this.comment.comment_body = e.target.value;
         console.log(this.comment);
         fetch(`${this.api}/posts/${e.target.dataset.post}/add-comment`,{
@@ -174,4 +155,107 @@ export default{
 </script>
 
 <style>
+.post{
+  margin: 10px auto;
+  padding: 20px 3px;
+  background: #eee;
+  box-shadow: 0 3px 7px #222;
+  position: relative;
+}
+.rtl{
+  direction: rtl !important;
+  text-align: right !important;
+}
+.card-body{
+  padding-top: 30px;
+}
+/*.rtl .owner{
+  left: 0;
+
+}*/
+.owner{
+  position:absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  right: 0;
+}
+.bold{
+  font-weight: 900  !important;
+}
+.italic{
+  font-size: 12px;
+  font-weight: 200;
+  font-style: italic;
+}
+.post span{
+  display: inline-block;
+  margin: 5px;
+}
+li{
+  list-style-type: none !important
+}
+p{
+  margin: 5px;
+  padding: 3px
+}
+.comments{
+  max-height: 300px;
+  overflow-y: auto;
+}
+.comments li{
+  padding: 5px;
+  background: #e8e8e8;
+  margin-bottom: .25rem;
+  position: relative;
+}
+.comments li:nth-child(odd){
+  background: #dbeaf8;
+}
+.comment-body{
+  margin: 10px auto
+}
+.delete-comment{
+  position: absolute;
+  top: 2px;right:2px;
+  padding: 2px 6px;
+}
+.likes{
+  margin: 30px 10px 5px;
+  color: #0080dd;
+  font-size: 22px;
+}
+.delete-btn{
+  position: relative;
+}
+.delete-btn::after{
+  display: none;
+  content: 'double click to delete';
+  min-width: 130px;
+  padding: 5px;
+  background: #222;
+  color: #fff;
+  border-radius: 5px;
+  position: absolute;
+  top: calc(100% + 15px);left: 50%;
+  transform: translate(-50%, 0);
+  font-size: 12px !important;
+}
+.delete-btn::before{
+  display: none;
+  content: '';
+  width: 0;height: 0;
+  border: 10px solid transparent;
+  border-top-color: #000;
+  position: absolute;
+  top: calc(100% + 2px);left: 50%;
+  transform: translate(-50%, 0);
+}
+.delete-btn:hover::after{
+  display: block
+}
+.delete-btn:hover::before{
+  display: block
+}
 </style>

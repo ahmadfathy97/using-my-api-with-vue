@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
 
   <div class="posts">
     <div v-if="!posts.length">
@@ -259,4 +259,4 @@ p{
 .delete-btn:hover::before{
   display: block
 }
-</style>
+</style> -->

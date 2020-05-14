@@ -14,6 +14,15 @@
             <label>Body</label>
             <textarea class="form-control" required name="info" v-model="data.body"></textarea>
           </div>
+
+          <div class="form-group">
+            <label class="d-block">post direction</label>
+            <input class="p-2 m-2" required type="radio" id="rtl" name="dir" value="rtl" v-model="data.dir" />
+            <label for="rtl">right to left</label>
+            <input class="p-2 m-2" required type="radio" id="ltr" name="dir" value="ltr" v-model="data.dir" />
+            <label for="ltr">left to right</label>
+          </div>
+
           <div class="form-group">
             <label>Category</label>
             <select class="form-control" name="data.category_id" v-model="data.category_id">
@@ -29,7 +38,7 @@
           </div>
         </form>
       </div>
-      <div v-if="preview" class="post p-3 preview">
+      <div v-if="preview" class="post p-3 preview" :class="{rtl: data.dir ='rtl'}">
         <button v-if="preview" class="btn btn-danger close-preview m-2 position-absolute" @click="preview= false">X</button>
         <div v-html="previewContent"></div>
       </div>
@@ -46,7 +55,8 @@ export default{
       data:{
         title:'',
         body: '',
-        category_id: ''
+        category_id: '',
+        dir: ''
       },
       oldCategory:{
         id: '',
@@ -72,6 +82,7 @@ export default{
         console.log(data);
         this.data.title = data.title;
         this.data.body = data.body;
+        this.data.dir = data.dir;
         this.oldCategory.id = data.category_id._id;
         this.data.category_id = data.category_id._id;
 
