@@ -1,4 +1,4 @@
-# [online preview](http://tiny-blog-vue.netlify.app/ "tiny-blog")
+# [online preview](https://habshtakanat.netlify.app/ "habshtakanat")
 ## using my [api](https://github.com/ahmadfathy97/api "api") with vue.js
 
 ## Project setup
