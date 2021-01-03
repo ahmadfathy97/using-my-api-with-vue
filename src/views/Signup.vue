@@ -62,13 +62,6 @@ export default{
     }
   },
   computed: mapGetters(["api"]),
-  mounted(){
-    if(window.localStorage.getItem('authToken')){
-      this.logedIn = true;
-      this.$router.history.push('/');
-    }
-  },
-
   methods:{
     handleUploadFile(){
       this.data.pic = this.$refs.pic.files[0];

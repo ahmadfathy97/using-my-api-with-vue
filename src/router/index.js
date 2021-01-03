@@ -16,6 +16,8 @@ import Search from '../views/SearchResult.vue'
 import Verify from '../views/Verify.vue'
 import ForgetPass from '../views/ForgetPass.vue'
 import ResetPass from '../views/ResetPass.vue'
+import NotFound from '../views/NotFound.vue'
+
 
 
 Vue.use(VueRouter)
@@ -78,7 +80,7 @@ const routes = [
   },
   {
     path: '/posts/edit/:id',
-    name: 'editPost',
+    name: 'EditPost',
     component: EditPost
   },
   {
@@ -88,7 +90,7 @@ const routes = [
   },
   {
     path: '/search-result/:name',
-    name: 'search-result',
+    name: 'SearchResult',
     component: Search
   },
   {
@@ -98,13 +100,18 @@ const routes = [
   },
   {
     path: '/forget-password',
-    name: 'forget-passord',
+    name: 'ForgetPassword',
     component: ForgetPass
   },
   {
     path: '/reset-password/:hash',
-    name: 'reset-password',
+    name: 'ResetPassword',
     component: ResetPass
+  },
+  {
+    path: '*/*',
+    name: 'NotFound',
+    component: NotFound
   }
 ]
 
@@ -113,5 +120,17 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  let isAuthenticated = window.localStorage.getItem('authToken') || null;
+  if(isAuthenticated && (to.name == 'Login' || to.name == 'Signup' || to.name == 'Verify' || to.name == 'ForgetPassword' || to.name == 'ResetPassword')){
+    next({name: 'Home'})
+  } else if (!isAuthenticated && (to.name !== 'Login' || to.name !== 'Signup' || to.name !== 'Verify' || to.name !== 'ForgetPassword' || to.name !== 'ResetPassword')) {
+    next()
+  } else {
+    next();
+  }
+})
+
 
 export default router

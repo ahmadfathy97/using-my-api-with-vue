@@ -36,25 +36,21 @@ export default{
   },
   computed: mapGetters(["api"]),
   mounted(){
-    if(window.localStorage.getItem('authToken')){
-      let name = this.$route.params.name;
-      fetch(`${this.api}/search/?username=${name}`, {
-        headers:{
-          'Content-Type': 'application/json',
-          'auth_token': window.localStorage.getItem('authToken')
-        }
-      })
-      .then(res => res.json())
-      .then((data)=>{
-        if(data.noResults) this.noResults = data.noResults
-        else this.users = data.searchResult
-      })
-      .catch((err)=>{
-        console.log(err);
-      });
-    } else{
-      this.$router.history.push('/login');
-    }
+    let name = this.$route.params.name;
+    fetch(`${this.api}/search/?username=${name}`, {
+      headers:{
+        'Content-Type': 'application/json',
+        'auth_token': window.localStorage.getItem('authToken')
+      }
+    })
+    .then(res => res.json())
+    .then((data)=>{
+      if(data.noResults) this.noResults = data.noResults
+      else this.users = data.searchResult
+    })
+    .catch((err)=>{
+      console.log(err);
+    });
   }
 }
 </script>

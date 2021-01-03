@@ -49,12 +49,6 @@ import { mapGetters } from 'vuex';
       }
     },
     computed: mapGetters(["api"]),
-    mounted(){
-      if(window.localStorage.getItem('authToken')){
-        this.logedIn = true;
-        this.$router.history.push('/');
-      }
-    },
     methods:{
       login(e){
         e.preventDefault();

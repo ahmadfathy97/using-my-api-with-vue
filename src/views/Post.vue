@@ -22,7 +22,7 @@ import { mapGetters } from 'vuex';
 export default{
   data(){
     return{
-      logedIn: false,
+      logedIn: true,
       post: {},
       user_id: ''
     }
@@ -32,24 +32,20 @@ export default{
     onePost
   },
   mounted(){
-    if( window.localStorage.getItem('authToken')){
-      this.logedIn = true;
-      this.user_id = window.localStorage.getItem('user_id');
-      let id = this.$route.params.id || '';
-      fetch(`${this.api}/posts/${id}`,{
-        headers: {
-          'Content-Type': 'application/json',
-          'auth_token': window.localStorage.getItem('authToken') || null
-        },
-      })
-      .then(res => res.json())
-      .then(post => {
-        this.post = post;
-        console.table(post);
-      })
-    } else {
-      this.$router.history.push('/login');
-    }
+
+    this.user_id = window.localStorage.getItem('user_id');
+    let id = this.$route.params.id || '';
+    fetch(`${this.api}/posts/${id}`,{
+      headers: {
+        'Content-Type': 'application/json',
+        'auth_token': window.localStorage.getItem('authToken') || null
+      },
+    })
+    .then(res => res.json())
+    .then(post => {
+      this.post = post;
+      console.table(post);
+    })
   },
 }
 </script>

@@ -23,29 +23,23 @@ import { mapGetters } from 'vuex';
 export default{
   data(){
     return {
-      logedIn: false,
+      logedIn: true,
       categories: []
     }
   },
   computed: mapGetters(["api"]),
   mounted(){
-    if(window.localStorage.getItem('authToken')){
-      fetch(`${this.api}/categories`,{
-        headers: {
-          'Content-Type': 'application/json',
-          'auth_token': window.localStorage.getItem('authToken') || null
-        }
-      })
-      .then(res=> res.json())
-      .then((data)=>{
-        this.logedIn = true;
-        this.categories = data;
-      })
-      .catch(err => console.log(err));
-    } else {
-      this.logedIn = false;
-      this.$router.history.push('/login');
-    }
+    fetch(`${this.api}/categories`,{
+      headers: {
+        'Content-Type': 'application/json',
+        'auth_token': window.localStorage.getItem('authToken') || null
+      }
+    })
+    .then(res=> res.json())
+    .then((data)=>{
+      this.categories = data;
+    })
+    .catch(err => console.log(err));
   }
 }
 </script>

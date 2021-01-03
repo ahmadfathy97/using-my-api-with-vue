@@ -3,15 +3,14 @@
     <div class="container">
 
       <div class="row">
-
-        <div v-if="logedIn" class="col-md-12">
-          <h1>Latest Posts</h1>
-        </div>
-
         <div v-if="!logedIn" class="not-loged-in col-md-12 d-flex align-items-center justify-content-center flex-column">
           <div class="alert-info text-center rounded p-3 shadow h3">
             <router-link to="/login">login</router-link> or <router-link to="/signup">sign up</router-link>
           </div>
+        </div>
+
+        <div v-if="logedIn" class="col-md-12">
+          <h1>Latest Posts</h1>
         </div>
 
         <div v-if="logedIn" class="col-md-12">
@@ -38,6 +37,7 @@ export default{
     allPosts
   },
   mounted(){
+    console.log(454);
     if(this.$route.query.resetpassword){
       this.$router.history.push(`/reset-password/${this.$route.query.hash}`)
     }
@@ -58,12 +58,6 @@ export default{
         console.log(err);
       })
     }
-  },
-  deletePost(id){
-    console.log(id, 454644646464646486484897489899898989);
-    this.posts = this.posts.filter(post=>{
-      return post._id !== id
-    })
   }
 }
 </script>

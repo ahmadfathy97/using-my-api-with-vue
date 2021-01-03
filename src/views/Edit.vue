@@ -70,8 +70,26 @@ export default{
   },
   computed: mapGetters(["api"]),
   mounted(){
-    if(window.localStorage.getItem('authToken')){
-      fetch(`${this.api}/posts/${this.$route.params.id}` ,{
+    fetch(`${this.api}/posts/${this.$route.params.id}` ,{
+      headers: {
+        'Content-Type': 'application/json',
+        'auth_token': window.localStorage.getItem('authToken') || null
+      }
+    })
+    .then(res=> res.json())
+    .then((data)=>{
+      console.log(data);
+      this.data.title = data.title;
+      this.data.body = data.body;
+      this.data.dir = data.dir;
+      this.oldCategory.id = data.category_id._id;
+      this.data.category_id = data.category_id._id;
+
+      this.oldCategory.name = data.category_id.category_name;
+      if(data.user_id._id != window.localStorage.getItem('user_id')){
+        this.$router.history.push('/posts/' + this.$route.params.id);
+      }
+      fetch(`${this.api}/categories/`,{
         headers: {
           'Content-Type': 'application/json',
           'auth_token': window.localStorage.getItem('authToken') || null
@@ -79,34 +97,11 @@ export default{
       })
       .then(res=> res.json())
       .then((data)=>{
-        console.log(data);
-        this.data.title = data.title;
-        this.data.body = data.body;
-        this.data.dir = data.dir;
-        this.oldCategory.id = data.category_id._id;
-        this.data.category_id = data.category_id._id;
-
-        this.oldCategory.name = data.category_id.category_name;
-        if(data.user_id._id != window.localStorage.getItem('user_id')){
-          this.$router.history.push('/posts/' + this.$route.params.id);
-        }
-        fetch(`${this.api}/categories/`,{
-          headers: {
-            'Content-Type': 'application/json',
-            'auth_token': window.localStorage.getItem('authToken') || null
-          }
-        })
-        .then(res=> res.json())
-        .then((data)=>{
-          this.categories = data
-          console.log(this.categories);
-        })
+        this.categories = data
+        console.log(this.categories);
       })
-      .catch(err => console.log(err));
-    } else {
-      this.logedIn = false;
-      this.$router.history.push('/login');
-    }
+    })
+    .catch(err => console.log(err));
   },
   methods:{
     editPost(e){

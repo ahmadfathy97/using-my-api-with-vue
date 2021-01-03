@@ -44,7 +44,7 @@
         </button>
         <div class="form-group">
           <label>username</label>
-          <input type="text" class="form-control" name="username" v-model="username"">
+          <input type="text" class="form-control" name="username" v-model="username">
         </div>
         <div class="form-group">
           <label>day of birth</label>
@@ -106,41 +106,37 @@ export default{
   },
   computed: mapGetters(["api"]),
   mounted(){
-    if(window.localStorage.getItem('authToken')){
-      let id = this.$route.params.id;
-      fetch(`${this.api}/users/${id}`, {
-        headers:{
-          'Content-Type': 'application/json',
-          'auth_token': window.localStorage.getItem('authToken')
-        }
-      })
-      .then(res => res.json())
-      .then((data)=>{
-        this.user = data;
-        console.log(data);
-        this.username = data.username
-        this.info = data.info
-        this.dayOfBirth = data.dayOfBirth
-      })
-      .catch((err)=>{
-        console.log(err);
-      })
-      fetch(`${this.api}/posts/user/${id}` ,{
-        headers:{
-          'Content-Type': 'application/json',
-          'auth_token': window.localStorage.getItem('authToken')
-        }
-      })
-      .then(res => res.json())
-      .then((data) =>{
-        this.posts = data
-      })
-      .catch((err)=>{
-        console.log('err', err);
-      })
-    }else{
-      this.$router.history.push('/login');
-    }
+    let id = this.$route.params.id;
+    fetch(`${this.api}/users/${id}`, {
+      headers:{
+        'Content-Type': 'application/json',
+        'auth_token': window.localStorage.getItem('authToken')
+      }
+    })
+    .then(res => res.json())
+    .then((data)=>{
+      this.user = data;
+      console.log(data);
+      this.username = data.username
+      this.info = data.info
+      this.dayOfBirth = data.dayOfBirth
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+    fetch(`${this.api}/posts/user/${id}` ,{
+      headers:{
+        'Content-Type': 'application/json',
+        'auth_token': window.localStorage.getItem('authToken')
+      }
+    })
+    .then(res => res.json())
+    .then((data) =>{
+      this.posts = data
+    })
+    .catch((err)=>{
+      console.log('err', err);
+    })
   },
   methods:{
     handleUploadFile(){

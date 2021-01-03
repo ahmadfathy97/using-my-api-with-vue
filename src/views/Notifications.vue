@@ -37,36 +37,31 @@ import { mapGetters } from 'vuex';
 export default{
   data(){
     return{
-      logedIn: false,
+      logedIn: true,
       notifications: []
     }
   },
   computed: mapGetters(["api"]),
   mounted(){
-    if( window.localStorage.getItem('authToken')){
-      this.logedIn = true;
+    fetch(`${this.api}/users/notifications`,{
+      headers: {
+        'Content-Type': 'application/json',
+        'auth_token': window.localStorage.getItem('authToken') || null
+      }
+    })
+    .then(res=> res.json())
+    .then((data)=>{
+      this.notifications = data.notis
+      console.log(data.notis);
       fetch(`${this.api}/users/notifications`,{
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'auth_token': window.localStorage.getItem('authToken') || null
         }
       })
-      .then(res=> res.json())
-      .then((data)=>{
-        this.notifications = data.notis
-        console.log(data.notis);
-        fetch(`${this.api}/users/notifications`,{
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'auth_token': window.localStorage.getItem('authToken') || null
-          }
-        })
-      })
-      .catch(err => console.log(err));
-    } else{
-      this.$router.history.push('/login');
-    }
+    })
+    .catch(err => console.log(err));
   }
 }
 </script>
