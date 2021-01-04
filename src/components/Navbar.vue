@@ -11,7 +11,7 @@
           <input v-model="name" class="searchBox" @keyup="enterKey($event)" />
           <router-link class="btn btn-light p-1 text-dark" :to="'/search-result/' + name" exact>Search</router-link>
         </div>
-        <router-link class="float-right btn btn-danger" to="/logout" exact>logout</router-link>
+        <button class="float-right btn btn-danger m-1" @click="logout()">logout</button>
       </div>
       <div class="small-screen">
         <router-link to="/" exact>
@@ -56,12 +56,12 @@
             </svg>
           </router-link>
         </div>
-        <router-link class="float-right btn btn-danger" to="/logout" exact>
+        <button class="float-right btn btn-danger m-1" @click="logout()">
           <svg class="bi bi-box-arrow-up-right" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" d="M3.5 15A1.5 1.5 0 005 16.5h8a1.5 1.5 0 001.5-1.5v-4a.5.5 0 00-1 0v4a.5.5 0 01-.5.5H5a.5.5 0 01-.5-.5V7a.5.5 0 01.5-.5h4a.5.5 0 000-1H5A1.5 1.5 0 003.5 7v8zm7-11a.5.5 0 01.5-.5h5a.5.5 0 01.5.5v5a.5.5 0 01-1 0V4.5H11a.5.5 0 01-.5-.5z" clip-rule="evenodd"/>
           <path fill-rule="evenodd" d="M16.354 3.646a.5.5 0 010 .708l-8 8a.5.5 0 01-.708-.708l8-8a.5.5 0 01.708 0z" clip-rule="evenodd"/>
         </svg>
-        </router-link>
+        </button>
       </div>
     </template>
     <template  v-if="!logedIn">
@@ -87,28 +87,32 @@ export default{
     if(window.localStorage && window.localStorage.getItem('authToken')){
       this.logedIn = true;
       this.user_id = window.localStorage.getItem('user_id');
-      setInterval(() => {
-        fetch(`${this.api}/users/notifications`,{
-          method: 'GET',
-          headers: {
-            'Content-Type':'application/josn',
-            'auth_token': window.localStorage.getItem('authToken') || null
-          }
-        })
-        .then(res => res.json())
-        .then((data)=>{
-          let unreaded = data.notis.filter((noti)=>{
-            return noti.readed === false;
-          });
-          this.notisNum = unreaded.length;
-          console.log(this.notisNum, unreaded.length);
-        })
-        .catch((err)=>{
-          console.log(err);
-        })
+      let fetchNewNotis = setInterval(() => {
+        if(window.localStorage.getItem('authToken')){
+          fetch(`${this.api}/users/notifications`,{
+            method: 'GET',
+            headers: {
+              'Content-Type':'application/josn',
+              'auth_token': window.localStorage.getItem('authToken') || null
+            }
+          })
+          .then(res => res.json())
+          .then((data)=>{
+            let unreaded = data.notis.filter((noti)=>{
+              return noti.readed === false;
+            });
+            this.notisNum = unreaded.length;
+            console.log(this.notisNum, unreaded.length);
+          })
+          .catch((err)=>{
+            console.log(err);
+          })
+        } else{
+          clearInterval(fetchNewNotis)
+        }
       }, 10000)
     } else{
-    this.logedIn = false
+      this.logedIn = false
     }
   },
   methods:{
@@ -116,6 +120,12 @@ export default{
       if(e.keyCode === 13){
         this.$router.history.push(`/search-result/${e.target.value}`);
       }
+    },
+    logout(){
+      if(window.localStorage && window.localStorage.getItem('authToken')){
+        window.localStorage.removeItem('authToken')
+      }
+      this.$router.history.push('/login');
     }
   }
 }
