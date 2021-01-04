@@ -1,117 +1,92 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Profile from '../views/Profile.vue'
-import Login from '../views/Login.vue'
-import Signup from '../views/Signup.vue'
-import Logout from '../views/Logout.vue'
-import AddPost from '../views/AddPost.vue'
-import Post from '../views/Post.vue'
-import Categories from '../views/Categories.vue'
-import AddCategory from '../views/addCategory.vue'
-import Category from '../views/Category.vue'
-import EditPost from '../views/Edit.vue'
-import Notis from '../views/Notifications.vue'
-import Search from '../views/SearchResult.vue'
-import Verify from '../views/Verify.vue'
-import ForgetPass from '../views/ForgetPass.vue'
-import ResetPass from '../views/ResetPass.vue'
-import NotFound from '../views/NotFound.vue'
-
-
-
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: Profile
+    component: () => import(/* webpackChunkName: "Home" */ '../views/Home.vue')
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: () => import(/* webpackChunkName: "Login" */ '../views/Login.vue')
   },
   {
     path: '/signup',
     name: 'Signup',
-    component: Signup
+    component: () => import(/* webpackChunkName: "Signup" */ '../views/Signup.vue')
   },
   {
     path: '/logout',
     name: 'Logout',
-    component: Logout
+    component: () => import(/* webpackChunkName: "Logout" */ '../views/Logout.vue')
   },
   {
     path: '/user/:id',
     name: 'Profile',
-    component: Profile
+    component: () => import(/* webpackChunkName: "Profile" */ '../views/Profile.vue')
   },
   {
     path: '/addpost',
     name: 'AddPost',
-    component: AddPost
+    component: () => import(/* webpackChunkName: "AddPost" */ '../views/AddPost.vue')
   },
   {
     path: '/posts/:id',
     name: 'Post',
-    component: Post
+    component: () => import(/* webpackChunkName: "Post" */ '../views/Post.vue')
   },
   {
     path: '/categories',
     name: 'Categories',
-    component: Categories
+    component: () => import(/* webpackChunkName: "Categories" */ '../views/Categories.vue')
   },
   // {
   //   path: '/addCategory',
   //   name: 'addCategory',
-  //   component: AddCategory
+  //   component: () => import(/* webpackChunkName: "AddCategory" */ '../views/AddCategory.vue')
   // },
   {
     path: '/categories/:name',
     name: 'Category',
-    component: Category
+    component: () => import(/* webpackChunkName: "Category" */ '../views/Category.vue')
   },
   {
     path: '/posts/edit/:id',
     name: 'EditPost',
-    component: EditPost
+    component: () => import(/* webpackChunkName: "Edit" */ '../views/Edit.vue')
   },
   {
     path: '/notifications',
     name: 'Notifications',
-    component: Notis
+    component: () => import(/* webpackChunkName: "Notifications" */ '../views/Notifications.vue')
   },
   {
     path: '/search-result/:name',
     name: 'SearchResult',
-    component: Search
+    component: () => import(/* webpackChunkName: "SearchResult" */ '../views/SearchResult.vue')
   },
   {
     path: '/verify',
     name: 'Verify',
-    component: Verify
+    component: () => import(/* webpackChunkName: "Verify" */ '../views/Verify.vue')
   },
   {
     path: '/forget-password',
     name: 'ForgetPassword',
-    component: ForgetPass
+    component: () => import(/* webpackChunkName: "ForgetPass" */ '../views/ForgetPass.vue')
   },
   {
     path: '/reset-password/:hash',
     name: 'ResetPassword',
-    component: ResetPass
+    component: () => import(/* webpackChunkName: "ResetPass" */ '../views/ResetPass.vue')
   },
   {
     path: '*/*',
     name: 'NotFound',
-    component: NotFound
+    component: () => import(/* webpackChunkName: "NotFound" */ '../views/NotFound.vue')
   }
 ]
 
@@ -125,8 +100,10 @@ router.beforeEach((to, from, next) => {
   let isAuthenticated = window.localStorage.getItem('authToken') || null;
   if(isAuthenticated && (to.name == 'Login' || to.name == 'Signup' || to.name == 'Verify' || to.name == 'ForgetPassword' || to.name == 'ResetPassword')){
     next({name: 'Home'})
-  } else if (!isAuthenticated && (to.name !== 'Login' || to.name !== 'Signup' || to.name !== 'Verify' || to.name !== 'ForgetPassword' || to.name !== 'ResetPassword')) {
+  } else if (!isAuthenticated && (to.name === 'Login' || to.name === 'Signup' || to.name === 'Verify' || to.name === 'ForgetPassword' || to.name === 'ResetPassword' || to.name === 'Home')) {
     next()
+  } else if(!isAuthenticated){
+    next({name: 'Login'})
   } else {
     next();
   }
