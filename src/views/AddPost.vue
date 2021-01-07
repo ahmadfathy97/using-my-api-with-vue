@@ -6,6 +6,9 @@
       </div>
       <div class="col-md-12 bg-light border shadow p-3">
         <form class="" @submit="post($event)">
+          <div class="form-group" v-if="err">
+            <div class="alert alert-danger">{{err}}</div>
+          </div>
           <div class="form-group">
             <label>title</label>
             <input class="form-control" required type="text" name="title" v-model="data.title" />
@@ -31,7 +34,7 @@
 
           <div class="form-group">
             <label>Category</label>
-            <select class="form-control" name="data.category_id" v-model="data.category_id">
+            <select class="form-control" required name="data.category_id" v-model="data.category_id">
               <template id="" v-for="category in categories">
                 <option :value="category._id">{{category.category_name}}</option>
               </template>
@@ -67,7 +70,8 @@ export default{
       logedIn: true,
       categories: [],
       preview: false,
-      previewContent: ''
+      previewContent: '',
+      err: ''
     }
   },
   computed: mapGetters(["api"]),
@@ -100,7 +104,11 @@ export default{
       .then(res=> res.json())
       .then((data)=>{
         console.log(data);
-        this.$router.history.push('/posts/' + data.post_id);
+        if(data && data.success){
+          this.$router.history.push('/posts/' + data.post_id);
+        } else {
+          this.err = data.msg
+        }
       })
       .catch(err => console.log(err));
     },

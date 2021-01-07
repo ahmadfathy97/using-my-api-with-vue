@@ -4,7 +4,7 @@
     <div v-if="!posts.length">
       there is no posts yet...
     </div>
-    <div class="card post bg-light" v-for="post in posts"">
+    <div class="card post bg-light" v-for="post in posts">
       <div class="card-body">
         <h3 class="card-title text-center"><router-link :to="'/posts/' + post._id">{{post.title}}</router-link></h3>
         <span class="card-title bold italic">by: <router-link :to="'/user/' + post.user_id._id">{{post.user_id.username}}</router-link></span>
