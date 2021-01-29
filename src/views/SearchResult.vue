@@ -45,8 +45,11 @@ export default{
     })
     .then(res => res.json())
     .then((data)=>{
-      if(data.noResults) this.noResults = data.noResults
-      else this.users = data.searchResult
+      console.log(data);
+      if(data && data.success){
+        if(data.noResults) this.noResults = data.noResults || 'there is no result found'
+        else this.users = data.searchResult
+      }
     })
     .catch((err)=>{
       console.log(err);

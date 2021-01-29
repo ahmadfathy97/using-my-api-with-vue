@@ -1,7 +1,7 @@
 <template>
   <div class="profile">
     <div class="container">
-      <div class="row">
+      <div class="row" v-if="!err">
         <div class="col-md-12 bg-light p-2 header-container">
           <button v-if="user_id === $route.params.id" class="position-absolute btn btn-dark" @click="closed = false">edit</button>
           <div class="d-flex flex-column justify-content-center align-items-center" width="100%">
@@ -22,8 +22,11 @@
             </div>
           </div>
         </div>
+
+        <!-- posts -->
         <div class="col-md-12">
-          <p v-if="!posts.length">there is no posts</p>
+          <p v-if="!posts.length && !postsErr">there is no posts</p>
+          <p class="alert alert-danger" v-if="postsErr">{{postsErr}}</p>
           <template v-if="posts.length">
             <h2>posts</h2>
             <div class="post bg-light" v-for="post in posts">
@@ -34,6 +37,13 @@
           </template>
         </div>
       </div>
+
+      <div v-if="err">
+        <div class="alert alert-danger">
+          {{err}}
+        </div>
+      </div>
+
     </div>
 
 
@@ -101,12 +111,16 @@ export default{
       dayOfBirth: '',
       oldPassword: '',
       password: '',
-      pic: ''
+      pic: '',
+      err: '',
+      postsErr: ''
     }
   },
   computed: mapGetters(["api"]),
   mounted(){
     let id = this.$route.params.id;
+
+    // fetching user data
     fetch(`${this.api}/users/${id}`, {
       headers:{
         'Content-Type': 'application/json',
@@ -115,15 +129,22 @@ export default{
     })
     .then(res => res.json())
     .then((data)=>{
-      this.user = data;
       console.log(data);
-      this.username = data.username
-      this.info = data.info
-      this.dayOfBirth = data.dayOfBirth
+      if(data && data.success){
+        this.user = data.user;
+        this.username = data.user.username
+        this.info = data.user.info
+        this.dayOfBirth = data.user.dayOfBirth
+      } else{
+        this.err = data.msg || 'somthing went wrong'
+      }
     })
     .catch((err)=>{
       console.log(err);
+      this.err = 'something went wrong'
     })
+
+    // fetching posts
     fetch(`${this.api}/posts/user/${id}` ,{
       headers:{
         'Content-Type': 'application/json',
@@ -132,12 +153,18 @@ export default{
     })
     .then(res => res.json())
     .then((data) =>{
-      this.posts = data
+      console.log(data);
+      if(data && data.success){
+        this.posts = data.posts
+      } else{
+        this.postsErr = data.msg || 'somthing went wrong'
+      }
     })
     .catch((err)=>{
-      console.log('err', err);
+      this.postsErr = 'somthing went wrong'
     })
   },
+
   methods:{
     handleUploadFile(){
       this.pic = this.$refs.pic.files[0];

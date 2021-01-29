@@ -37,7 +37,7 @@ export default{
     })
     .then(res=> res.json())
     .then((data)=>{
-      this.categories = data;
+      this.categories = data.categories;
     })
     .catch(err => console.log(err));
   }
