@@ -7,14 +7,16 @@
         <p>{{category.category_info}}</p>
       </div>
       <div class="col-md-12">
-        <allPosts :posts="posts" :key="Math.random()"/>
+        <onePost v-for="post in posts" :post="post" :key="Math.random()"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import allPosts from '../components/allPosts.vue';
+// import allPosts from '../components/allPosts.vue';
+import onePost from '../components/onePost.vue';
+
 import { mapGetters } from 'vuex';
 
 export default{
@@ -31,7 +33,8 @@ export default{
     }
   },
   components: {
-    allPosts
+    // allPosts
+    onePost
   },
   computed: mapGetters(["api"]),
   mounted(){

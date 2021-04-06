@@ -14,7 +14,8 @@
         </div>
 
         <div v-if="logedIn" class="col-md-12">
-          <allPosts :posts="posts" :key="Math.random()"/>
+
+          <onePost v-for="post in posts" :post="post" :key="Math.random()"/>
         </div>
 
       </div>
@@ -24,7 +25,9 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import allPosts from '../components/allPosts.vue';
+// import allPosts from '../components/allPosts.vue';
+import onePost from '../components/onePost.vue';
+
 export default{
   data(){
     return{
@@ -34,7 +37,8 @@ export default{
   },
   computed: mapGetters(["api"]),
   components: {
-    allPosts
+    // allPosts
+    onePost
   },
   mounted(){
     console.log(454);

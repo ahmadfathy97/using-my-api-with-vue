@@ -38,7 +38,7 @@
           </div>
         </form>
       </div>
-      <div v-if="preview" class="post p-3 preview" :class="{rtl: data.dir ='rtl'}">
+      <div v-if="preview" class="post p-3 preview" :class="{rtl: data.dir == 'rtl'}">
         <button v-if="preview" class="btn btn-danger close-preview m-2 position-absolute" @click="preview= false">X</button>
         <div v-html="previewContent"></div>
       </div>
@@ -78,7 +78,6 @@ export default{
     })
     .then(res=> res.json())
     .then((data)=>{
-      console.log(data);
       this.data.title = data.title;
       this.data.body = data.body;
       this.data.dir = data.dir;
@@ -98,7 +97,6 @@ export default{
       .then(res=> res.json())
       .then((data)=>{
         this.categories = data
-        console.log(this.categories);
       })
     })
     .catch(err => console.log(err));
@@ -116,14 +114,12 @@ export default{
       })
       .then(res=> res.json())
       .then((data)=>{
-        console.log(data);
         this.$router.history.push('/posts/' + this.$route.params.id);
       })
       .catch(err => console.log(err));
     },
     Preview(){
       this.previewContent = DOMPurify.sanitize(marked(this.data.body));
-      console.log(this.previewContent);
       if(this.previewContent.length){
         this.preview = true
       }

@@ -104,7 +104,6 @@ export default{
       })
       .then(res=> res.json())
       .then((data)=>{
-        console.log(data);
         if(data && data.success){
           this.$router.history.push('/posts/' + data.post_id);
         } else {
@@ -115,7 +114,6 @@ export default{
     },
     Preview(){
       this.previewContent = DOMPurify.sanitize(marked(this.data.body));
-      console.log(this.previewContent);
       if(this.previewContent.length){
         this.preview = true
       }

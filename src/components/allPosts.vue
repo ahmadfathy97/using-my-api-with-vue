@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
 
   <div class="posts">
     <div v-if="!posts.length">
@@ -366,4 +366,4 @@ p{
 .xml .hljs-cdata {
   opacity: 0.5;
 }
-</style>
+</style> -->
