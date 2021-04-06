@@ -7,7 +7,7 @@
         <p>{{category.category_info}}</p>
       </div>
       <div class="col-md-12">
-        <allPosts :posts="posts" />
+        <allPosts :posts="posts" :key="Math.random()"/>
       </div>
     </div>
   </div>

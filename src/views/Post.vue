@@ -9,7 +9,7 @@
     </div>
 
     <div v-if="logedIn" class="col-md-12">
-      <onePost :post="post"/>
+      <onePost :post="post" :key="Math.random()"/>
     </div>
 
   </div>

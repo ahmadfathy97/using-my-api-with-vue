@@ -14,7 +14,7 @@
         </div>
 
         <div v-if="logedIn" class="col-md-12">
-          <allPosts :posts="posts" />
+          <allPosts :posts="posts" :key="Math.random()"/>
         </div>
 
       </div>
