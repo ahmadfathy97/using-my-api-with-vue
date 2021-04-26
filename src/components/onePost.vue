@@ -2,7 +2,7 @@
 
   <div>
 
-    <div class="card post bg-light">
+    <div class="card post bg-light border border-dark my-5">
       <div class="card-body">
         <h3 class="card-title text-center"><router-link :to="'/posts/' + post._id">{{post.title}}</router-link></h3>
         <span class="card-title bold italic">by: <router-link :to="'/user/' + post.user_id._id">{{post.user_id.username}}</router-link></span>
@@ -14,44 +14,38 @@
         </div>
         <router-link :to="'/categories/' + post.category_id.category_name" class="btn btn-primary">#{{post.category_id.category_name}}</router-link>
 
-        <h5 class="likes">
-          <span v-if="post.likes.indexOf(user_id) >= 0" class="btn btn-danger" :data-post="post._id" @click="like($event)" role="button">unLike</span>
-          <span v-if="post.likes.indexOf(user_id) < 0" class="btn btn-primary" :data-post="post._id" @click="like($event)" role="button">Like</span>
-          <!-- <svg width="40px" height="40px" viewBox="0 0 40 40">
-            <g>
-            	<path fill="#FFFFFF" stroke="#FF1D25" stroke-linecap="round" stroke-miterlimit="10" d="M20.476,7.476c0,0,8.283-9.492,16.544,0
-            		c0,0,10.093,8.741-16.544,28.642"/>
-            	<path fill="#FFFFFF" stroke="#FF1D25" stroke-linecap="round" stroke-miterlimit="10" d="M20.086,7.476c0,0-8.283-9.492-16.544,0
-            		c0,0-10.093,8.741,16.544,28.642"/>
-            </g>
-          </svg> -->
-          <span>{{post.likes.length}}</span>
+        <h5 class="likes d-flex align-items-center justify-content-center">
+          <span class="btn border border-dark rounded-circle h1" :class="{'btn-danger': post.likes.indexOf(user_id) >= 0}" :data-post="post._id" @click="like($event)" role="button">♥</span>
+          <span class="bold h4":class="{'text-danger': post.likes.indexOf(user_id) >= 0}">{{post.likes.length}}</span>
         </h5>
         <!-- <h2 class="border-bottom border-primary">comments</h2> -->
-        <ul ref="commentList" v-show="post.comments.length > 0" class="comments">
-          <li v-for="comment in post.comments" class="mb-3">
+        <div class="form-group">
+          <textarea
+          class="form-control comment-input shadow border border-dark p-2 h2"
+          type="text"
+          name="body"
+          :data-post="post._id"
+          @keyup="submitComment($event)">
+        </textarea>
+      </div>
+        <ul ref="commentList" v-show="post.comments.length > 0" class="comments ">
+          <li v-for="comment in post.comments" class="mb-3 shadow border border-dark p-1 px-2 position-relative">
             <button v-if="comment.user_id._id === user_id"
                     class="btn btn-danger delete-comment m-1 rounded-circle"
                     :data-comment="comment._id"
                     @dblclick="deleteComment($event)">X</button>
-            <h3><img :src="comment.user_id.pic" /></h3>
-            <h3>
-              <router-link :to="'/user/'+comment.user_id._id">
-                {{comment.user_id.username}}
-              </router-link>
+            <h3 class="d-flex align-items-center justify-content-start">
+              <img :src="comment.user_id.pic" :alt="comment.user_id.username.slice(0,1).toUpperCase() || ':)'" class="user-img rounded-circle border border-dark"/>
+              <div class="">
+                <router-link class="d-block" :to="'/user/'+comment.user_id._id">
+                  {{comment.user_id.username}}
+                </router-link>
+                <h6 class="comment-time italic mx-2">{{comment.comment_time}}</h6>
+              </div>
             </h3>
-            <h4 class="comment-time italic">{{comment.comment_time}}</h4>
             <p class="comment-body">{{comment.comment_body}}</p>
           </li>
         </ul>
-        <div class="form-group">
-          <textarea class="form-control"
-                 type="text"
-                 name="body"
-                 :data-post="post._id"
-                 @keyup="submitComment($event)">
-          </textarea>
-        </div>
 
       </div>
     </div>
@@ -123,11 +117,11 @@ export default{
         if(e.target.classList.contains('btn-primary')){
           e.target.classList.remove('btn-primary');
           e.target.classList.add('btn-danger')
-          e.target.textContent = 'unlike'
+          // e.target.textContent = 'unlike'
         } else{
           e.target.classList.add('btn-primary');
           e.target.classList.remove('btn-danger')
-          e.target.textContent = 'like'
+          // e.target.textContent = 'like'
 
         }
         this.post.likes = data.likes;
@@ -178,8 +172,7 @@ export default{
 .post{
   margin: 10px auto;
   padding: 20px 3px;
-  background: #eee;
-  box-shadow: 0 3px 7px #222;
+  background: #fff;
   position: relative;
 }
 .rtl{
@@ -224,16 +217,10 @@ p{
   max-height: 300px;
   overflow-y: auto;
 }
-.comments li{
-  padding: 5px;
-  background: #F3F3F3;
-  box-shadow: 0px 8px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 25px;
-  position: relative;
+.comments li, .comment-input{
+  border-radius: 20px;
 }
-/* .comments li:nth-child(odd){
-  background: #dbeaf8;
-} */
+
 .comment-body{
   margin: 10px auto
 }
@@ -245,7 +232,6 @@ p{
 .likes{
   margin: 30px 10px 5px;
   color: #0080dd;
-  font-size: 22px;
 }
 .delete-btn{
   position: relative;

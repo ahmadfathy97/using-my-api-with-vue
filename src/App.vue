@@ -22,11 +22,34 @@ body{
   padding-top: 80px !important;
   background: #f6f6f6 !important;
 }
+*::-webkit-scrollbar {
+  width: 1em;
+}
+*::-webkit-scrollbar-track {
+  border: 1px solid #333;
+  border-radius: 5px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #333;
+  border-radius: 5px;
+
+}
 .btn{
   cursor: pointer !important
 }
-.post img{
-  width: 100% !important
+.post img:not(.user-img){
+  display: block;
+  margin: auto;
+  box-shadow: 0 0 5px #0081ff;
+  border-radius: 10px; 
+  max-width: 100%;
+  min-width: 300px;
+  min-height: 300px;
+}
+.user-img{
+  background-color: #666;
+  width: 45px;
+  height: 45px;
 }
 .post ul li{
   margin: 2px 20px 2px 20px;
