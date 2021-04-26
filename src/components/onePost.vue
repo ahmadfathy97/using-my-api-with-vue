@@ -17,17 +17,29 @@
         <h5 class="likes">
           <span v-if="post.likes.indexOf(user_id) >= 0" class="btn btn-danger" :data-post="post._id" @click="like($event)" role="button">unLike</span>
           <span v-if="post.likes.indexOf(user_id) < 0" class="btn btn-primary" :data-post="post._id" @click="like($event)" role="button">Like</span>
-
+          <!-- <svg width="40px" height="40px" viewBox="0 0 40 40">
+            <g>
+            	<path fill="#FFFFFF" stroke="#FF1D25" stroke-linecap="round" stroke-miterlimit="10" d="M20.476,7.476c0,0,8.283-9.492,16.544,0
+            		c0,0,10.093,8.741-16.544,28.642"/>
+            	<path fill="#FFFFFF" stroke="#FF1D25" stroke-linecap="round" stroke-miterlimit="10" d="M20.086,7.476c0,0-8.283-9.492-16.544,0
+            		c0,0-10.093,8.741,16.544,28.642"/>
+            </g>
+          </svg> -->
           <span>{{post.likes.length}}</span>
         </h5>
-        <h2 v-if="post.comments.length > 0">comments</h2>
+        <!-- <h2 class="border-bottom border-primary">comments</h2> -->
         <ul ref="commentList" v-show="post.comments.length > 0" class="comments">
-          <li v-for="comment in post.comments">
+          <li v-for="comment in post.comments" class="mb-3">
             <button v-if="comment.user_id._id === user_id"
-                    class="btn btn-danger delete-comment"
+                    class="btn btn-danger delete-comment m-1 rounded-circle"
                     :data-comment="comment._id"
                     @dblclick="deleteComment($event)">X</button>
-            <h3><router-link :to="'/user/'+comment.user_id._id">{{comment.user_id.username}}</router-link></h3>
+            <h3><img :src="comment.user_id.pic" /></h3>
+            <h3>
+              <router-link :to="'/user/'+comment.user_id._id">
+                {{comment.user_id.username}}
+              </router-link>
+            </h3>
             <h4 class="comment-time italic">{{comment.comment_time}}</h4>
             <p class="comment-body">{{comment.comment_body}}</p>
           </li>
@@ -78,7 +90,6 @@ export default{
         this.comment.comment_time = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
         this.comment.user_id = window.localStorage.getItem('user_id');
         this.comment.comment_body = e.target.value;
-        console.log(this.comment);
         fetch(`${this.api}/posts/${e.target.dataset.post}/add-comment`,{
           method: 'POST',
           headers:{
@@ -215,13 +226,14 @@ p{
 }
 .comments li{
   padding: 5px;
-  background: #e8e8e8;
-  margin-bottom: .25rem;
+  background: #F3F3F3;
+  box-shadow: 0px 8px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
   position: relative;
 }
-.comments li:nth-child(odd){
+/* .comments li:nth-child(odd){
   background: #dbeaf8;
-}
+} */
 .comment-body{
   margin: 10px auto
 }
@@ -267,103 +279,5 @@ p{
 .delete-btn:hover::before{
   display: block
 }
-.hljs {
-  display: block;
-  overflow-x: auto;
-  padding: 0.5em;
-  background: #222;
-  -webkit-text-size-adjust: none;
-}
-
-.hljs-keyword,
-.hljs-literal,
-.hljs-change,
-.hljs-winutils,
-.hljs-flow,
-.nginx .hljs-title,
-.tex .hljs-special {
-  color: white;
-}
-
-.hljs,
-.hljs-subst {
-  color: #ddd;
-}
-
-.hljs-string,
-.hljs-title,
-.hljs-type,
-.ini .hljs-title,
-.hljs-tag .hljs-value,
-.css .hljs-rule .hljs-value,
-.hljs-preprocessor,
-.hljs-pragma,
-.ruby .hljs-symbol,
-.ruby .hljs-symbol .hljs-string,
-.ruby .hljs-class .hljs-parent,
-.hljs-built_in,
-.django .hljs-template_tag,
-.django .hljs-variable,
-.smalltalk .hljs-class,
-.hljs-javadoc,
-.ruby .hljs-string,
-.django .hljs-filter .hljs-argument,
-.smalltalk .hljs-localvars,
-.smalltalk .hljs-array,
-.hljs-attr_selector,
-.hljs-pseudo,
-.hljs-addition,
-.hljs-stream,
-.hljs-envvar,
-.apache .hljs-tag,
-.apache .hljs-cbracket,
-.tex .hljs-command,
-.hljs-prompt,
-.coffeescript .hljs-attribute,
-.hljs-name {
-  color: #d88;
-}
-
-.hljs-comment,
-.hljs-annotation,
-.hljs-decorator,
-.hljs-pi,
-.hljs-doctype,
-.hljs-deletion,
-.hljs-shebang,
-.apache .hljs-sqbracket,
-.tex .hljs-formula {
-  color: #777;
-}
-
-.hljs-keyword,
-.hljs-literal,
-.hljs-title,
-.css .hljs-id,
-.hljs-phpdoc,
-.hljs-dartdoc,
-.hljs-type,
-.vbscript .hljs-built_in,
-.rsl .hljs-built_in,
-.smalltalk .hljs-class,
-.diff .hljs-header,
-.hljs-chunk,
-.hljs-winutils,
-.bash .hljs-variable,
-.apache .hljs-tag,
-.tex .hljs-special,
-.hljs-request,
-.hljs-status {
-  font-weight: bold;
-}
-
-.coffeescript .javascript,
-.javascript .xml,
-.tex .hljs-formula,
-.xml .javascript,
-.xml .vbscript,
-.xml .css,
-.xml .hljs-cdata {
-  opacity: 0.5;
-}
+.hljs{display:block;overflow-x:auto;padding:.5em;color:#abb2bf;background:#282c34}.hljs-comment,.hljs-quote{color:#5c6370;font-style:italic}.hljs-doctag,.hljs-formula,.hljs-keyword{color:#c678dd}.hljs-deletion,.hljs-name,.hljs-section,.hljs-selector-tag,.hljs-subst{color:#e06c75}.hljs-literal{color:#56b6c2}.hljs-addition,.hljs-attribute,.hljs-meta-string,.hljs-regexp,.hljs-string{color:#98c379}.hljs-built_in,.hljs-class .hljs-title{color:#e6c07b}.hljs-attr,.hljs-number,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-pseudo,.hljs-template-variable,.hljs-type,.hljs-variable{color:#d19a66}.hljs-bullet,.hljs-link,.hljs-meta,.hljs-selector-id,.hljs-symbol,.hljs-title{color:#61aeee}.hljs-emphasis{font-style:italic}.hljs-strong{font-weight:700}.hljs-link{text-decoration:underline}
 </style>
