@@ -1,6 +1,9 @@
 <template>
   <div id="app">
     <Navbar :key="$route.path + Math.random()"/>
+    <div class="w-75 mx-auto text-center alert alert-danger">
+      I am working on the UI
+    </div>
     <router-view :key="$route.path"/>
     <!-- important adding key attribute force Vue to create a new instance of the component. -->
   </div>
@@ -41,15 +44,14 @@ body{
   display: block;
   margin: auto;
   box-shadow: 0 0 5px #0081ff;
-  border-radius: 10px; 
+  border-radius: 10px;
   max-width: 100%;
-  min-width: 300px;
-  min-height: 300px;
 }
 .user-img{
   background-color: #666;
   width: 45px;
   height: 45px;
+  overflow: hidden;
 }
 .post ul li{
   margin: 2px 20px 2px 20px;

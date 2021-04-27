@@ -1,28 +1,26 @@
 <template>
   <div class="container">
-    <div v-if="logedIn" class="row">
+    <div class="row">
       <div class="col-md-12">
         <img :src="category.category_pic" width="100%" >
-        <h5>{{ category.category_name}}</h5>
+        <h3 class="text-primary bold my-3"># {{ category.category_name}}</h3>
         <p>{{category.category_info}}</p>
       </div>
       <div class="col-md-12">
-        <onePost v-for="post in posts" :post="post" :key="Math.random()"/>
+        <PostTitle v-for="post in posts" :post="post" :key="post._id"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import allPosts from '../components/allPosts.vue';
-import onePost from '../components/onePost.vue';
+import PostTitle from '../components/PostTitle.vue';
 
 import { mapGetters } from 'vuex';
 
 export default{
   data(){
     return {
-      logedIn: true,
       category: {},
       posts: [],
       comment:{
@@ -33,8 +31,7 @@ export default{
     }
   },
   components: {
-    // allPosts
-    onePost
+    PostTitle
   },
   computed: mapGetters(["api"]),
   mounted(){

@@ -28,12 +28,8 @@
           <p v-if="!posts.length && !postsErr">there is no posts</p>
           <p class="alert alert-danger" v-if="postsErr">{{postsErr}}</p>
           <template v-if="posts.length">
-            <h2>posts</h2>
-            <div class="post bg-light" v-for="post in posts">
-              <router-link :to="'/posts/'+post._id">
-                <h3>{{post.title}}</h3>
-              </router-link>
-            </div>
+            <h2 class="d-inline-block pb-3 border-bottom border-dark">posts</h2>
+            <PostTitle v-for="post in posts" :post="post" :key="post._id" />
           </template>
         </div>
       </div>
@@ -98,7 +94,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-
+import PostTitle from '../components/PostTitle';
 export default{
   data(){
     return{
@@ -115,6 +111,9 @@ export default{
       err: '',
       postsErr: ''
     }
+  },
+  components:{
+    PostTitle
   },
   computed: mapGetters(["api"]),
   mounted(){

@@ -2,23 +2,41 @@
 
   <div>
 
-    <div class="card post bg-light border border-dark my-5">
-      <div class="card-body">
-        <h3 class="card-title text-center"><router-link :to="'/posts/' + post._id">{{post.title}}</router-link></h3>
-        <span class="card-title bold italic">by: <router-link :to="'/user/' + post.user_id._id">{{post.user_id.username}}</router-link></span>
-        <span class="card-title italic">{{post.created_at}}</span>
-        <div class="border shadow px-2 py-1" :class="{rtl : post.dir == 'rtl'}" v-html="post.sanitizedHtml"></div>
+    <div class="post bg-light border border-dark my-5 rounded">
+      <div class="m-1">
+
+        <!-- post title and date -->
+        <h3 class="d-flex align-items-center justify-content-center flex-column">
+          <router-link v-if="$route.params.id !== post._id" :to="'/posts/' + post._id">{{post.title}}</router-link>
+          <span v-else>{{post.title}}</span>
+          <span class="italic">{{post.created_at}}</span>
+        </h3>
+        <!-- post owner -->
+        <h5 class="mx-3">
+          By:<router-link :to="'/user/' + (post.user_id ? post.user_id._id : '')">
+            {{post.user_id ? post.user_id.username: ''}}
+          </router-link>
+        </h5>
+
+        <!-- post -->
+        <div class="px-2 py-1" :class="{rtl : post.dir == 'rtl'}" v-html="post.sanitizedHtml"></div>
+
+        <!-- btns for post owner  -->
         <div v-if="post.owner" class="owner">
           <router-link class="btn btn-info" :to="'/posts/edit/' + post._id">edit</router-link>
           <span class="btn btn-danger delete-btn" @dblclick="deletePost($event)" :data-post="post._id" >delete</span>
         </div>
-        <router-link :to="'/categories/' + post.category_id.category_name" class="btn btn-primary">#{{post.category_id.category_name}}</router-link>
 
+        <!-- categories -->
+        <router-link :to="'/categories/' + (post.category_id ? post.category_id.category_name: '')" class="btn btn-outline-secondary bold mb-5">#{{ post.category_id? post.category_id.category_name : '' }}</router-link>
+
+        <!-- Likes -->
         <h5 class="likes d-flex align-items-center justify-content-center">
-          <span class="btn border border-dark rounded-circle h1" :class="{'btn-danger': post.likes.indexOf(user_id) >= 0}" :data-post="post._id" @click="like($event)" role="button">♥</span>
-          <span class="bold h4":class="{'text-danger': post.likes.indexOf(user_id) >= 0}">{{post.likes.length}}</span>
+          <span class="btn border border-dark rounded-circle h1" :class="{'btn-danger': post.likes && (post.likes.indexOf(user_id) >= 0)}" :data-post="post._id" @click="like($event)" role="button">♥</span>
+          <span class="bold h4":class="{'text-danger': post.likes && (post.likes.indexOf(user_id) >= 0)}">{{post.likes ? post.likes.length : 0}}</span>
         </h5>
-        <!-- <h2 class="border-bottom border-primary">comments</h2> -->
+
+        <!-- comment input -->
         <div class="form-group">
           <textarea
           class="form-control comment-input shadow border border-dark p-2 h2"
@@ -26,18 +44,20 @@
           name="body"
           :data-post="post._id"
           @keyup="submitComment($event)">
-        </textarea>
-      </div>
-        <ul ref="commentList" v-show="post.comments.length > 0" class="comments ">
+          </textarea>
+        </div>
+
+        <!-- comments -->
+        <ul ref="commentList" v-show="post.comments && (post.comments.length > 0)" class="comments ">
           <li v-for="comment in post.comments" class="mb-3 shadow border border-dark p-1 px-2 position-relative">
-            <button v-if="comment.user_id._id === user_id"
+            <button v-if="comment.user_id && (comment.user_id._id === user_id)"
                     class="btn btn-danger delete-comment m-1 rounded-circle"
                     :data-comment="comment._id"
                     @dblclick="deleteComment($event)">X</button>
             <h3 class="d-flex align-items-center justify-content-start">
-              <img :src="comment.user_id.pic" :alt="comment.user_id.username.slice(0,1).toUpperCase() || ':)'" class="user-img rounded-circle border border-dark"/>
-              <div class="">
-                <router-link class="d-block" :to="'/user/'+comment.user_id._id">
+              <img :src="comment.user_id? comment.user_id.pic : '' " :alt="comment.user_id ? comment.user_id.username.slice(0,1).toUpperCase() : ':)'" class="user-img rounded-circle border border-dark"/>
+              <div>
+                <router-link class="my-1 d-block" :to="'/user/'+ comment.user_id ? comment.user_id._id: '' ">
                   {{comment.user_id.username}}
                 </router-link>
                 <h6 class="comment-time italic mx-2">{{comment.comment_time}}</h6>
@@ -46,6 +66,9 @@
             <p class="comment-body">{{comment.comment_body}}</p>
           </li>
         </ul>
+        <div v-if="post.comments && !post.comments.length" class="m-3 h5">
+          Write the first comment
+        </div>
 
       </div>
     </div>
@@ -138,8 +161,11 @@ export default{
       })
       .then(res => res.json())
       .then((data) => {
-        console.log(data);
-        this.$router.history.push('/');
+        if(data.post_id == this.$route.params.id){
+          this.$router.history.push('/');
+        } else{
+          this.$emit('deletingPost', data.post_id)
+        }
       })
     },
     deleteComment(e){
@@ -179,9 +205,7 @@ export default{
   direction: rtl !important;
   text-align: right !important;
 }
-.card-body{
-  padding-top: 30px;
-}
+
 /*.rtl .owner{
   left: 0;
 
@@ -205,6 +229,12 @@ export default{
 .post span{
   display: inline-block;
   margin: 5px;
+}
+.post hr{
+  width: 30%;
+    margin: 1rem auto;
+    height: 0;
+    border: 2px dashed #713cc5;
 }
 li{
   list-style-type: none !important

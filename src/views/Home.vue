@@ -14,8 +14,10 @@
         </div>
 
         <div v-if="logedIn" class="col-md-12">
-
-          <onePost v-for="post in posts" :post="post" :key="Math.random()"/>
+          <div v-if="!posts.length" class="h4 text-primary">
+            Loading...
+          </div>
+          <onePost v-for="post in posts" :post="post" :key="Math.random()" @deletingPost="deletePost"/>
         </div>
 
       </div>
@@ -41,7 +43,6 @@ export default{
     onePost
   },
   mounted(){
-    console.log(454);
     if(this.$route.query.resetpassword){
       this.$router.history.push(`/reset-password/${this.$route.query.hash}`)
     }
@@ -61,6 +62,12 @@ export default{
       .catch( err =>{
         console.log(err);
       })
+    }
+  },
+  methods:{
+    deletePost(id){
+      console.log('id => ', id);
+      this.posts = this.posts.filter(post=> post._id !== id)
     }
   }
 }
