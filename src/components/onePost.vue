@@ -22,9 +22,10 @@
         <div class="px-2 py-1" :class="{rtl : post.dir == 'rtl'}" v-html="post.sanitizedHtml"></div>
 
         <!-- btns for post owner  -->
-        <div v-if="post.owner" class="owner">
-          <router-link class="btn btn-info" :to="'/posts/edit/' + post._id">edit</router-link>
-          <span class="btn btn-danger delete-btn" @dblclick="deletePost($event)" :data-post="post._id" >delete</span>
+        <span class="controls bold" @click="controlsOpend = !controlsOpend">&#10247;</span>
+        <div v-if="post.owner && controlsOpend" class="owner shadow">
+          <router-link class="btn btn-light w-100 m-1" :to="'/posts/edit/' + post._id">edit</router-link>
+          <span class="btn btn-light w-100 m-1 delete-btn" @dblclick="deletePost($event)" :data-post="post._id" >delete</span>
         </div>
 
         <!-- categories -->
@@ -86,6 +87,7 @@ export default{
   data(){
     return{
       logedIn: false,
+      controlsOpend: false,
       user_id: window.localStorage.getItem('user_id'),
       comment:{
         user_id: window.localStorage.getItem('user_id'),
@@ -210,11 +212,20 @@ export default{
   left: 0;
 
 }*/
-.owner{
+.owner, .controls{
   position:absolute;
   display: flex;
   align-items: center;
   justify-content: center;
+  top: 8px;
+  right: 25px;
+}
+.owner{
+  flex-direction: column;
+}
+.controls{
+  font-size: 28px;
+  cursor: pointer;
   top: 0;
   right: 0;
 }
