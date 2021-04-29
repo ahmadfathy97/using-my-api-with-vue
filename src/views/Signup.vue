@@ -2,7 +2,7 @@
   <div class="signup">
     <div v-if="!logedIn" class="container d-flex p-3 align-items-center justify-content-center flex-column">
       <div class="col-md-12 m-3">
-        <h1>Sign Up</h1>
+        <h1 class="page-title">Sign Up</h1>
       </div>
       <div class="col-md-12" >
         <form class="shadow p-3 bg-light" @submit.prevent="signup()">

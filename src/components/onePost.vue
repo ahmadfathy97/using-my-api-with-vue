@@ -32,7 +32,7 @@
 
         <!-- Likes -->
         <h5 class="likes d-flex align-items-center justify-content-center">
-          <span class="btn border border-dark rounded-circle h1" :class="{'btn-danger': post.likes && (post.likes.indexOf(user_id) >= 0)}" :data-post="post._id" @click="like($event)" role="button">♥</span>
+          <span class="like-btn btn border border-dark rounded-circle" :class="{'btn-danger': post.likes && (post.likes.indexOf(user_id) >= 0)}" :data-post="post._id" @click="like($event)" role="button">♥</span>
           <span class="bold h4":class="{'text-danger': post.likes && (post.likes.indexOf(user_id) >= 0)}">{{post.likes ? post.likes.length : 0}}</span>
         </h5>
 
@@ -42,14 +42,15 @@
           class="form-control comment-input shadow border border-dark p-2 h2"
           type="text"
           name="body"
+          dir="auto"
           :data-post="post._id"
-          @keyup="submitComment($event)">
+          @keyup.enter="submitComment($event)">
           </textarea>
         </div>
 
         <!-- comments -->
-        <ul ref="commentList" v-show="post.comments && (post.comments.length > 0)" class="comments ">
-          <li v-for="comment in post.comments" class="mb-3 shadow border border-dark p-1 px-2 position-relative">
+        <ul ref="commentList" v-show="post.comments && (post.comments.length > 0)" class="comments">
+          <li v-for="comment in post.comments" class="mb-3 shadow p-1 px-2 position-relative">
             <button v-if="comment.user_id && (comment.user_id._id === user_id)"
                     class="btn btn-danger delete-comment m-1 rounded-circle"
                     :data-comment="comment._id"
@@ -102,7 +103,7 @@ export default{
   props:['post'],
   methods:{
     submitComment(e){
-      if(e.keyCode == 13){
+      if(!e.shiftKey && e.target.value.trim().length){
         let date = new Date();
         this.comment.comment_time = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
         this.comment.user_id = window.localStorage.getItem('user_id');
@@ -118,11 +119,18 @@ export default{
         .then(res => res.json())
         .then((data) => {
           this.post.comments.push(data.comment);
-          e.target.value =''
+          e.target.value ='';
+          setTimeout(()=>{
+            let lastElement = this.$refs.commentList.children[this.$refs.commentList.children.length-1];
+            let T = lastElement ? lastElement.offsetTop : 0;
+            let H = lastElement ? lastElement.offsetHeight + 50 : 0;
+            this.$refs.commentList.scroll(0, T + H);
+          }, 1000)
         }).catch((err)=>{
           console.log(err);
         })
       }
+
     },
     like(e){
       let date = new Date();
@@ -139,13 +147,10 @@ export default{
       .then((data) => {
         if(e.target.classList.contains('btn-primary')){
           e.target.classList.remove('btn-primary');
-          e.target.classList.add('btn-danger')
-          // e.target.textContent = 'unlike'
+          e.target.classList.add('btn-danger');
         } else{
           e.target.classList.add('btn-primary');
-          e.target.classList.remove('btn-danger')
-          // e.target.textContent = 'like'
-
+          e.target.classList.remove('btn-danger');
         }
         this.post.likes = data.likes;
       })
@@ -180,7 +185,6 @@ export default{
       })
       .then(res => res.json())
       .then((data) => {
-        console.log(data);
         this.post.comments = this.post.comments.filter((comment)=>{
           return commentId !== comment._id
         })
@@ -191,10 +195,6 @@ export default{
 </script>
 
 <style>
-.card-title .router-link-exact-active, .card-title .router-link-active{
-  color: #0080ff !important;
-  background: transparent !important
-}
 .post{
   margin: 10px auto;
   padding: 20px 3px;
@@ -243,6 +243,22 @@ p{
   margin: 5px;
   padding: 3px
 }
+
+.likes{
+  margin: 30px 10px 5px;
+  color: #0080dd;
+}
+.like-btn{
+  padding: .1rem !important;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  font-size: 26px;
+}
+.like-btn:hover{
+  background: #ea6d79
+}
+
 .comments{
   max-height: 300px;
   overflow-y: auto;
@@ -256,12 +272,11 @@ p{
 }
 .delete-comment{
   position: absolute;
+  width: 26px;
+  height: 26px;
   top: 2px;right:2px;
-  padding: 2px 6px;
-}
-.likes{
-  margin: 30px 10px 5px;
-  color: #0080dd;
+  padding: 1px;
+  text-align: center
 }
 .delete-btn{
   position: relative;

@@ -3,7 +3,7 @@
   <div class="reset-password">
     <div v-if="!logedIn" class="container d-flex p-3 align-items-center justify-content-center flex-column">
       <div class="col-md-12 m-3">
-        <h1>enter your new password</h1>
+        <h1 class="page-title">enter your new password</h1>
       </div>
       <div class="col-md-12">
         <form class="shadow p-3 bg-light" @submit="sendCode($event)">

@@ -2,7 +2,7 @@
   <div class="verify">
     <div v-if="!logedIn" class="container d-flex p-3 align-items-center justify-content-center flex-column">
       <div class="col-md-12 m-3">
-        <h1>verify your account</h1>
+        <h1 class="page-title">verify your account</h1>
       </div>
       <div class="col-md-12">
         <form class="shadow p-3 bg-light" @submit="verify($event)">

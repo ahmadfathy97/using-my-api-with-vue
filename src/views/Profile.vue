@@ -28,7 +28,7 @@
           <p v-if="!posts.length && !postsErr">there is no posts</p>
           <p class="alert alert-danger" v-if="postsErr">{{postsErr}}</p>
           <template v-if="posts.length">
-            <h2 class="d-inline-block pb-3 border-bottom border-dark">posts</h2>
+            <h2 class="py-1 page-title">posts</h2>
             <PostTitle v-for="post in posts" :post="post" :key="post._id" />
           </template>
         </div>

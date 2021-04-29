@@ -2,7 +2,7 @@
   <div class="login">
     <div v-if="!logedIn" class="container d-flex p-3 align-items-center justify-content-center flex-column">
       <div class="col-md-12 m-3">
-        <h1>Login</h1>
+        <h1 class="page-title">Login</h1>
       </div>
       <div class="col-md-12">
         <form class="shadow p-3 bg-light" @submit="login($event)">

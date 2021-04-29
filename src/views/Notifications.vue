@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <h1>Notifications</h1>
+          <h1 class="page-title">Notifications</h1>
         </div>
         <div class="col-md-12" v-for="noti in notifications">
           <div v-if="noti.noti_type === 'comment'" style="width: 100% !important" class="m-1 bg-warning" :class="{'bg-light': noti.readed}">

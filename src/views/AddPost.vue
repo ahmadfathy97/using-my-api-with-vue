@@ -2,7 +2,7 @@
   <div class="add-post">
     <div v-if="logedIn" class="container d-flex align-items-center justify-content-center flex-column">
       <div class="col-md-12 m-3">
-        <h1>Create Post</h1>
+        <h1 class="page-title">Create Post</h1>
       </div>
       <div class="col-md-12 bg-light border shadow p-3">
         <form class="" @submit="post($event)">
@@ -11,7 +11,7 @@
           </div>
           <div class="form-group">
             <label>title</label>
-            <input class="form-control" required type="text" name="title" v-model="data.title" />
+            <input dir="auto" class="form-control" required type="text" name="title" v-model="data.title" />
           </div>
           <div class="form-group">
             <label>Body
@@ -20,7 +20,7 @@
                 <a class="m-1 p-0" href="https://www.markdownguide.org/cheat-sheet/" rel="noopener" target="_blank">markdown</a>.
               </small>
             </label>
-            <textarea class="form-control" required name="info" v-model="data.body"></textarea>
+            <textarea dir="auto" class="form-control" rows="16" required name="info" v-model="data.body"></textarea>
 
           </div>
 
@@ -42,21 +42,19 @@
           </div>
           <div class="form-group">
             <input class="btn btn-primary m-2" type="submit" value="Post" />
-            <input class="btn btn-secondary m-2" type="button" @click="Preview()" value="preview" />
+            <input class="btn btn-secondary m-2" type="button" @click="data.body.length ? preview = true: preview = false" value="preview" />
           </div>
         </form>
       </div>
-      <div v-if="preview" class="post p-3 preview" :class="{rtl: data.dir == 'rtl'}">
-        <button v-if="preview" class="btn btn-danger close-preview position-absolute" @click="preview= false">X</button>
-        <div v-html="previewContent"></div>
-      </div>
+
+      <PostPreview v-if="preview" :content="data.body" @closePrview="preview= false" :class="{rtl: data.dir == 'rtl'}" />
+
     </div>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import marked from 'marked';
-import DOMPurify from 'dompurify';
+import PostPreview from '../components/PostPreview.vue';
 export default{
   data(){
     return{
@@ -70,9 +68,11 @@ export default{
       logedIn: true,
       categories: [],
       preview: false,
-      previewContent: '',
       err: ''
     }
+  },
+  components:{
+    PostPreview
   },
   computed: mapGetters(["api"]),
   mounted(){
@@ -111,12 +111,6 @@ export default{
         }
       })
       .catch(err => console.log(err));
-    },
-    Preview(){
-      this.previewContent = DOMPurify.sanitize(marked(this.data.body));
-      if(this.previewContent.length){
-        this.preview = true
-      }
     }
   }
 }
@@ -126,24 +120,5 @@ export default{
 .add-post.container{
   min-height: 80vh
 }
-.preview{
-  height: 80vh;
-  width: 90%;
-  padding: 5px 15px;
-  position: absolute;
-  margin: 20px auto;
-  z-index: 999999999999;
-}
-.preview.rtl{
-  direction: rtl !important;
-  text-align: right !important;
-}
-.preview div{
-  height: 100%;
-  overflow: auto;
-}
-.close-preview {
-  right: 0;
-  top: 0
-}
+
 </style>

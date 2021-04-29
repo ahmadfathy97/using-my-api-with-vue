@@ -2,17 +2,17 @@
   <div class="add-post">
     <div v-if="logedIn" class="container d-flex align-items-center justify-content-center flex-column">
       <div class="col-md-12">
-        <h1>edit Post</h1>
+        <h1 class="page-title">edit Post</h1>
       </div>
       <div class="col-md-12 bg-light border shadow p-3">
         <form class="" @submit="editPost($event)">
           <div class="form-group">
             <label>title</label>
-            <input class="form-control" required type="text" name="title" v-model="data.title" />
+            <input dir="auto" class="form-control" required type="text" name="title" v-model="data.title" />
           </div>
           <div class="form-group">
             <label>Body</label>
-            <textarea class="form-control" required name="info" v-model="data.body"></textarea>
+            <textarea dir="auto" class="form-control" rows="16" required name="info" v-model="data.body"></textarea>
           </div>
 
           <div class="form-group">
@@ -34,21 +34,17 @@
           </div>
           <div class="form-group">
             <input class="btn btn-primary m-2" type="submit" value="Edit" />
-            <input class="btn btn-secondary m-2" type="button" @click="Preview()" value="preview" />
+            <input class="btn btn-secondary m-2" type="button" @click="data.body.length ? preview = true: preview = false" value="preview" />
           </div>
         </form>
       </div>
-      <div v-if="preview" class="post p-3 preview" :class="{rtl: data.dir == 'rtl'}">
-        <button v-if="preview" class="btn btn-danger close-preview m-2 position-absolute" @click="preview= false">X</button>
-        <div v-html="previewContent"></div>
-      </div>
+      <PostPreview v-if="preview" :content="data.body" @closePrview="preview= false" :class="{rtl: data.dir == 'rtl'}" />
     </div>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import marked from 'marked';
-import DOMPurify from 'dompurify';
+import PostPreview from '../components/PostPreview.vue';
 export default{
   data(){
     return{
@@ -65,8 +61,10 @@ export default{
       logedIn: true,
       categories: [],
       preview: false,
-      previewContent: ''
     }
+  },
+  components:{
+    PostPreview
   },
   computed: mapGetters(["api"]),
   mounted(){
@@ -117,12 +115,6 @@ export default{
         this.$router.history.push('/posts/' + this.$route.params.id);
       })
       .catch(err => console.log(err));
-    },
-    Preview(){
-      this.previewContent = DOMPurify.sanitize(marked(this.data.body));
-      if(this.previewContent.length){
-        this.preview = true
-      }
     }
   }
 }

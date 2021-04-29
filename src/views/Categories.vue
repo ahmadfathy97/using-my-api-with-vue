@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <h1>Categories</h1>
+        <h1 class="page-title">Categories</h1>
       </div>
       <div class="col-md-4" v-for="category in categories">
         <div class="card" style="width: 100%; margin: 5px;">

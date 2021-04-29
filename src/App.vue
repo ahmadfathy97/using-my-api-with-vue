@@ -1,8 +1,11 @@
 <template>
   <div id="app">
     <Navbar :key="$route.path + Math.random()"/>
-    <div class="w-75 mx-auto text-center alert alert-danger">
-      I am working on the UI
+    <div class="m-1 p-1 w-75 mx-auto text-center alert alert-danger">
+      I am working on the UI.
+    </div>
+    <div class="m-1 p-1 w-75 mx-auto text-center alert alert-danger">
+      Sorry, the image will be deleted after 30 mins from uploading.
     </div>
     <router-view :key="$route.path"/>
     <!-- important adding key attribute force Vue to create a new instance of the component. -->
@@ -20,10 +23,10 @@ export default{
 </script>
 
 <style lang="scss">
-* {padding: 0;margin: 0;box-sizing: border-box;}
+* {padding: 0;margin: 0;box-sizing: border-box;word-break: break-all;}
 body{
   padding-top: 80px !important;
-  background: #f6f6f6 !important;
+  background: #eee !important;
 }
 *::-webkit-scrollbar {
   width: 1em;
@@ -39,6 +42,29 @@ body{
 }
 .btn{
   cursor: pointer !important
+}
+.page-title{
+  padding: .25rem auto;
+  display: inline-block;
+  position: relative;
+  // text-decoration: underline wavy #0080ff 3px;
+  color: #222;
+  margin-bottom: 15px;
+}
+.page-title:after, .page-title:before{
+  position: absolute;
+  content: '';
+  left: 0;
+  bottom: -4px;
+  height: 4px;
+  width: 80%;
+  border-radius: 8px;
+  background: #0080ff;
+}
+.page-title:after{
+  width: 60%;
+  bottom: -10px;
+  background: #222;
 }
 .post img:not(.user-img){
   display: block;
@@ -69,5 +95,7 @@ body{
 .post pre{
   background: #222;
   color: #f9f9f9;
+  direction: ltr !important;
+  text-align: left !important;
 }
 </style>

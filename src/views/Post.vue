@@ -1,10 +1,8 @@
 <template>
 <div class="container">
   <div class="row">
-    <div v-if="!post._id" class="h4 text-primary">
-      Loading...
-    </div>
-    <div v-if="post" class="col-md-12">
+    <Loading v-if="!post._id" />
+    <div v-if="post._id" class="col-md-12">
       <onePost :post="post" :key="post._id"/>
     </div>
   </div>
@@ -12,6 +10,8 @@
 </template>
 <script>
 import onePost from '../components/onePost.vue';
+import Loading from '../components/Loading.vue';
+
 import { mapGetters } from 'vuex';
 
 export default{
@@ -23,7 +23,8 @@ export default{
   },
   computed: mapGetters(["api"]),
   components: {
-    onePost
+    onePost,
+    Loading
   },
   mounted(){
     let id = this.$route.params.id || '';

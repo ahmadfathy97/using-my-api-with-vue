@@ -10,13 +10,11 @@
         </div>
 
         <div v-if="logedIn" class="col-md-12">
-          <h1>Latest Posts</h1>
+          <h1 class="page-title">Latest Posts</h1>
         </div>
 
         <div v-if="logedIn" class="col-md-12">
-          <div v-if="!posts.length" class="h4 text-primary">
-            Loading...
-          </div>
+          <Loading v-if="!posts.length" />
           <onePost v-for="post in posts" :post="post" :key="Math.random()" @deletingPost="deletePost"/>
         </div>
 
@@ -29,6 +27,8 @@
 import { mapGetters } from 'vuex';
 // import allPosts from '../components/allPosts.vue';
 import onePost from '../components/onePost.vue';
+import Loading from '../components/Loading.vue';
+
 
 export default{
   data(){
@@ -39,8 +39,8 @@ export default{
   },
   computed: mapGetters(["api"]),
   components: {
-    // allPosts
-    onePost
+    onePost,
+    Loading
   },
   mounted(){
     if(this.$route.query.resetpassword){
