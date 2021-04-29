@@ -2,7 +2,7 @@
 
   <div>
 
-    <div class="post bg-light border border-dark my-5 rounded">
+    <div class="post bg-light shadow my-5 rounded">
       <div class="m-1">
 
         <!-- post title and date -->
@@ -22,8 +22,8 @@
         <div class="px-2 py-1" :class="{rtl : post.dir == 'rtl'}" v-html="post.sanitizedHtml"></div>
 
         <!-- btns for post owner  -->
-        <span class="controls bold" @click="controlsOpend = !controlsOpend">&#10247;</span>
-        <div v-if="post.owner && controlsOpend" class="owner shadow">
+        <span class="controls bold" @click="controlsOpend = !controlsOpend"> ⠇</span>
+        <div v-if="post.owner && controlsOpend" class="owner shadow bg-light  ">
           <router-link class="btn btn-light w-100 m-1" :to="'/posts/edit/' + post._id">edit</router-link>
           <span class="btn btn-light w-100 m-1 delete-btn" @dblclick="deletePost($event)" :data-post="post._id" >delete</span>
         </div>

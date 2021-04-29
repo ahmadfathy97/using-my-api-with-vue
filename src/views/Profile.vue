@@ -1,47 +1,52 @@
 <template>
   <div class="profile">
-    <div class="container">
-      <div class="row" v-if="!err">
-        <div class="col-md-12 bg-light p-2 header-container">
-          <button v-if="user_id === $route.params.id" class="position-absolute btn btn-dark" @click="closed = false">edit</button>
-          <div class="d-flex flex-column justify-content-center align-items-center" width="100%">
-            <img :src="user.pic" class="rounded-circle shadow" width="300" height="300" alt="">
+    <div v-if="!err">
+      <div style="margin-bottom: 5rem" class="col-md-12 bg-light p-2 header-container position-relative">
+        <img :src="user.pic" class="user-pic position-absolute rounded-circle shadow" alt="">
+      </div>
+      <div class="container">
+        <div class="row">
+          <div v-if="this.$route.params.id != user_id" class="col-md-12 d-flex justify-content-center">
+            <span v-if="user.followers ? (user.followers.indexOf(user_id) >= 0 ? true : false) : false" class="btn btn-danger" @click="follow()">unfollow</span>
+            <span v-if="user.followers ? (user.followers.indexOf(user_id) < 0 ? true : false): false" class="btn btn-primary" @click="follow()">follow</span>
+          </div>
+          <div class="col-md-6 d-flex flex-column justify-content-center align-items-center">
             <h1>{{user.username}}</h1>
-            <p>{{user.info}}</p>
-            <p class="badge badge-warning p-2">
-              birthday: {{user.dayOfBirth}}
+            <p class="h6">
+              Birthday: {{user.dayOfBirth}}
             </p>
-            <div class="m-2 text-light">
-              <span class="m-1 bg-secondary p-2 rounded">followers: {{user.followers ? user.followers.length : 0}}</span>
-              <span class="m-1 bg-dark p-2 rounded">following: {{user.following ? user.following.length : 0}} </span>
-            </div>
-
-            <div v-if="this.$route.params.id != user_id">
-              <span v-if="user.followers ? (user.followers.indexOf(user_id) >= 0 ? true : false) : false" class="btn btn-danger" @click="follow()">unfollow</span>
-              <span v-if="user.followers ? (user.followers.indexOf(user_id) < 0 ? true : false): false" class="btn btn-primary" @click="follow()">follow</span>
-            </div>
+          </div>
+          <div class="col-md-6 d-flex flex-column justify-content-center align-items-center">
+            <span class="m-1 p-2 bold">Followers: {{user.followers ? user.followers.length : 0}} </span>
+            <span class="m-1 p-2 bold">Following: {{user.following ? user.following.length : 0}} </span>
+          </div>
+          <div class="col-md-12">
+            <p class="m-1 h5">{{user.info}}</p>
+          </div>
+          <div class="col-md-12 d-flex justify-content-center">
+            <button v-if="user_id === $route.params.id" class="btn btn-secondary my-2" @click="closed = false">Edit</button>
           </div>
         </div>
 
         <!-- posts -->
-        <div class="col-md-12">
-          <p v-if="!posts.length && !postsErr">there is no posts</p>
-          <p class="alert alert-danger" v-if="postsErr">{{postsErr}}</p>
-          <template v-if="posts.length">
-            <h2 class="py-1 page-title">posts</h2>
-            <PostTitle v-for="post in posts" :post="post" :key="post._id" />
-          </template>
+        <div class="row my-5">
+          <div class="col-md-12">
+            <p v-if="!posts.length && !postsErr" class="alert alert-info">there is no posts</p>
+            <p class="alert alert-danger" v-if="postsErr">{{postsErr}}</p>
+            <template v-if="posts.length">
+              <h2 class="py-1 page-title">posts</h2>
+              <PostTitle v-for="post in posts" :post="post" :key="post._id" />
+            </template>
+          </div>
         </div>
       </div>
-
-      <div v-if="err">
-        <div class="alert alert-danger">
-          {{err}}
-        </div>
-      </div>
-
     </div>
 
+    <div v-if="err">
+      <div class="alert alert-danger">
+        {{err}}
+      </div>
+    </div>
 
     <div v-if="!closed" class="fixed-top d-flex align-items-center justify-content-center editPopUp p-2 shadow m-0">
       <div class="form-container bg-light p-5 m-2 rounded">
@@ -244,7 +249,21 @@ export default{
 
 <style scoped>
 .header-container{
-  background-image: linear-gradient(0deg, #ffffff, #c1c1c1);
+  background-image: linear-gradient(189deg, #007bff, #010101);
+  min-height: 300px;
+  height: 50vh;
+}
+.user-pic{
+  width: 250px;
+  height: 250px;
+  position: absolute;
+  bottom: -50%;
+  left: 50%;
+  background: #aaa;
+  overflow: hidden;
+  object-fit: cover;
+  border: 5px solid #eee;
+  transform: translate(-50%, -50%);
 }
 .editPopUp{
   height: 100vh;

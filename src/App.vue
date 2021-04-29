@@ -1,12 +1,12 @@
 <template>
   <div id="app">
     <Navbar :key="$route.path + Math.random()"/>
-    <div class="m-1 p-1 w-75 mx-auto text-center alert alert-danger">
+    <!-- <div class="m-1 p-1 w-75 mx-auto text-center alert alert-danger">
       I am working on the UI.
     </div>
     <div class="m-1 p-1 w-75 mx-auto text-center alert alert-danger">
       Sorry, the image will be deleted after 30 mins from uploading.
-    </div>
+    </div> -->
     <router-view :key="$route.path"/>
     <!-- important adding key attribute force Vue to create a new instance of the component. -->
   </div>
@@ -25,7 +25,7 @@ export default{
 <style lang="scss">
 * {padding: 0;margin: 0;box-sizing: border-box;word-break: break-all;}
 body{
-  padding-top: 80px !important;
+  padding-top: 58px !important;
   background: #eee !important;
 }
 *::-webkit-scrollbar {
