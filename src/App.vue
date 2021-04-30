@@ -40,6 +40,10 @@ body{
   border-radius: 5px;
 
 }
+.container{
+  padding-left: 0;
+  padding-right: 0;
+}
 .btn{
   cursor: pointer !important
 }

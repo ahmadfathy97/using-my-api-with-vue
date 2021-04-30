@@ -10,7 +10,7 @@
         <div class="col-md-6">
           <template v-if="!noResults" v-for="user in users">
             <router-link class="row bg-light d-flex align-items-center" :to="'/user/'+ user._id">
-              <img :src="user.pic" style="height: 70px;width:70px;margin: 5px;" />
+              <img :src="user.pic" :style="'background-color:hsl('+ Math.floor(Math.random() * 255) + ', 100%, 50%);height: 70px;width:70px;overflow: hidden'" class="m-1 rounded-circle" />
               <h2>{{user.username}}</h2>
             </router-link>
           </template>

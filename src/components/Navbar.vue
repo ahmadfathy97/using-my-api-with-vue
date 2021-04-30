@@ -7,9 +7,8 @@
         <router-link to="/addpost" exact>Add Post</router-link>
         <router-link to="/categories" exact>Categories</router-link>
         <router-link to="/notifications" exact>Notifications<span class="badge badge-danger" v-if="notisNum > 0">{{notisNum || 0}}</span></router-link>
-        <div class="d-inline-flex align-items-center">
-          <input v-model="name" class="searchBox" @keyup="enterKey($event)" />
-          <router-link class="btn btn-light p-1 text-dark" :to="'/search-result/' + name" exact>Search</router-link>
+        <div class="d-inline-flex align-items-center btn btn-outline-light" @click="searchDialogue = true">
+          <svg width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="bi bi-search"><path fill-rule="evenodd" d="M12.442 12.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M8.5 14a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM15 8.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" clip-rule="evenodd"></path></svg>
         </div>
         <button class="float-right btn btn-danger m-1" @click="logout()">logout</button>
       </div>
@@ -47,14 +46,11 @@
           </svg>
           <span class="badge badge-danger" v-if="notisNum > 0">{{notisNum || 0}}</span>
         </router-link>
-        <div class="d-inline-flex align-items-center">
-          <input v-model="name" class="searchBox" @keyup="enterKey($event)" />
-          <router-link class="btn btn-light p-1 text-dark" :to="'/search-result/' + name" exact>
-            <svg class="bi bi-search" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" d="M12.442 12.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z" clip-rule="evenodd"/>
-              <path fill-rule="evenodd" d="M8.5 14a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM15 8.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" clip-rule="evenodd"/>
-            </svg>
-          </router-link>
+        <div class="d-inline-flex align-items-center btn btn-outline-light" @click="searchDialogue = true">
+          <svg class="bi bi-search" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M12.442 12.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z" clip-rule="evenodd"/>
+            <path fill-rule="evenodd" d="M8.5 14a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM15 8.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" clip-rule="evenodd"/>
+          </svg>
         </div>
         <button class="float-right btn btn-danger m-1" @click="logout()">
           <svg class="bi bi-box-arrow-up-right" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -69,18 +65,25 @@
       <router-link to="/login" exact>login</router-link>
       <router-link to="/signup" exact>signup</router-link>
     </template>
+
+    <SearchDialogue v-if="searchDialogue" @closeDialogue="searchDialogue = false"/>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import SearchDialogue from './SearchDialogue.vue';
 export default{
   data(){
     return{
       logedIn: false,
       user_id: '',
       notisNum: 0,
-      name: ''
+      name: '',
+      searchDialogue: false
     }
+  },
+  components:{
+    SearchDialogue
   },
   computed: mapGetters(["api"]),
   mounted(){
@@ -116,11 +119,6 @@ export default{
     }
   },
   methods:{
-    enterKey(e){
-      if(e.keyCode === 13){
-        this.$router.history.push(`/search-result/${e.target.value}`);
-      }
-    },
     logout(){
       if(window.localStorage && window.localStorage.getItem('authToken')){
         window.localStorage.removeItem('authToken')
@@ -137,11 +135,6 @@ export default{
     width: 100%;
     border-bottom: 4px solid #007bff;
     z-index: 9999999999999999999;
-  }
-  input.searchBox{
-    padding: 3px;
-    border-radius: 5px;
-    border: 1px solid #fff;
   }
   a{
     display: inline-block;
@@ -179,9 +172,6 @@ export default{
     }
     .small-screen{
       display: block;
-    }
-    input.searchBox{
-      width: 105px;
     }
     a{
       display: inline-block;

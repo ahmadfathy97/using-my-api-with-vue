@@ -2,8 +2,8 @@
 
   <div>
 
-    <div class="post bg-light shadow my-5 rounded">
-      <div class="m-1">
+    <div class="post bg-light shadow m-0 w-100 my-5 rounded px-1 py-3">
+      <div>
 
         <!-- post title and date -->
         <h3 class="d-flex align-items-center justify-content-center flex-column">
@@ -57,7 +57,7 @@
                     :data-comment="comment._id"
                     @dblclick="deleteComment($event)">X</button>
             <h3 class="d-flex align-items-center justify-content-start">
-              <img :src="comment.user_id? comment.user_id.pic : '' " :alt="comment.user_id ? comment.user_id.username.slice(0,1).toUpperCase() : ':)'" class="user-img rounded-circle border border-dark"/>
+              <img :src="comment.user_id? comment.user_id.pic : '' " :alt="comment.user_id ? comment.user_id.username.slice(0,1).toUpperCase() : ':)'" class="user-img rounded-circle border border-dark" :style="'background-color:hsl('+ Math.floor(Math.random() * 255) + ', 100%, 50%)'"/>
               <div>
                 <router-link class="my-1 d-block" :to="'/user/'+ comment.user_id ? comment.user_id._id: '' ">
                   {{comment.user_id.username}}
@@ -198,8 +198,6 @@ export default{
 
 <style>
 .post{
-  margin: 10px auto;
-  padding: 20px 3px;
   background: #fff;
   position: relative;
 }

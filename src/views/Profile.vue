@@ -4,8 +4,8 @@
       <div style="margin-bottom: 5rem" class="col-md-12 bg-light p-2 header-container position-relative">
         <img :src="user.pic" class="user-pic position-absolute rounded-circle shadow" alt="">
       </div>
-      <div class="container">
-        <div class="row">
+      <div class="container mt-5">
+        <div class="row pt-5">
           <div v-if="this.$route.params.id != user_id" class="col-md-12 d-flex justify-content-center">
             <span v-if="user.followers ? (user.followers.indexOf(user_id) >= 0 ? true : false) : false" class="btn btn-danger" @click="follow()">unfollow</span>
             <span v-if="user.followers ? (user.followers.indexOf(user_id) < 0 ? true : false): false" class="btn btn-primary" @click="follow()">follow</span>
@@ -247,11 +247,9 @@ export default{
 </script>
 
 
-<style>
-body{
-  padding-top: 40px !important;
-}
+<style scoped>
 .header-container{
+  margin-top: -20px;
   background-image: linear-gradient(189deg, #007bff, #010101);
   min-height: 300px;
   height: 50vh;
