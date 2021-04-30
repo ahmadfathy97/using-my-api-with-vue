@@ -23,9 +23,9 @@ export default{
 </script>
 
 <style lang="scss">
-* {padding: 0;margin: 0;box-sizing: border-box;word-break: break-all;}
+* {padding: 0;margin: 0;box-sizing: border-box;word-break: break-word;}
 body{
-  padding-top: 58px !important;
+  padding-top: 70px !important;
   background: #eee !important;
 }
 *::-webkit-scrollbar {

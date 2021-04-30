@@ -247,7 +247,10 @@ export default{
 </script>
 
 
-<style scoped>
+<style>
+body{
+  padding-top: 40px !important;
+}
 .header-container{
   background-image: linear-gradient(189deg, #007bff, #010101);
   min-height: 300px;
@@ -263,7 +266,7 @@ export default{
   overflow: hidden;
   object-fit: cover;
   border: 5px solid #eee;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -40%);
 }
 .editPopUp{
   height: 100vh;
