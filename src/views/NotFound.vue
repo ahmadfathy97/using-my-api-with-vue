@@ -1,7 +1,7 @@
 <template>
   <div class="notfound">
     <link href="https://fonts.googleapis.com/css?family=Caveat+Brush" rel="stylesheet"/>
-    <div class="container">
+    <div class="container d-flex align-items-center justify-content-center">
       <div class="body">
         <div class="text">404</div>
         <h2>- Page not found -</h2>
@@ -17,20 +17,13 @@ export default {
 </script>
 
 <style scoped>
-*{margin:0;padding: 0;box-sizing: border-box}
-body{min-height: 100vh;display: flex;align-items:center;justify-content: center; padding: 20px 10px;background: #ebeff6 !important}
+.notfound{
+  min-height: calc(100vh + 20px);
+  margin-top: -20px;
+  background: linear-gradient(45deg, #101520, #7adaff)
+}
 .container{
   width: 90%;
-  padding: 10px;
-  background: linear-gradient(45deg, #101520, #0080ff);
-  box-shadow: 0px 0px 5px #000;
-}
-.notfound{
-  min-height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column
 }
 .body .text{
   text-align: center;

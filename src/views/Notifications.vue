@@ -6,27 +6,7 @@
           <h1 class="page-title">Notifications</h1>
         </div>
         <div class="col-md-12" v-for="noti in notifications">
-          <div v-if="noti.noti_type === 'comment'" style="width: 100% !important" class="m-1 bg-warning" :class="{'bg-light': noti.readed}">
-            <router-link :to="'/posts/' + noti.item_id" class="text-primary">
-              <span class=""> {{noti.user_id.username}} </span>
-              <span class=""> {{noti.noti_text}} </span>
-              <span class=""> {{noti.noti_time}} </span>
-            </router-link>
-          </div>
-          <div v-else-if="noti.noti_type === 'follow'" style="width: 100% !important" class="m-1 bg-warning" :class="{'bg-light': noti.readed}">
-            <router-link :to="'/user/' + noti.user_id._id" class="text-primary">
-              <span class=""> {{noti.user_id.username}} </span>
-              <span class=""> {{noti.noti_text}} </span>
-              <span class=""> {{noti.noti_time}} </span>
-            </router-link>
-          </div>
-          <div v-else="noti.noti_type === 'like'" style="width: 100% !important" class="m-1 bg-warning" :class="{'bg-light': noti.readed}">
-            <router-link :to="'/posts/' + noti.item_id" class="text-primary">
-              <span class=""> {{noti.user_id.username}} </span>
-              <span class=""> {{noti.noti_text}} </span>
-              <span class=""> {{noti.noti_time}} </span>
-            </router-link>
-          </div>
+          <Notification :type="noti.noti_type" :noti="noti" />
         </div>
       </div>
     </div>
@@ -34,12 +14,16 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import Notification from '../components/Notification.vue';
 export default{
   data(){
     return{
       logedIn: true,
       notifications: []
     }
+  },
+  components:{
+    Notification
   },
   computed: mapGetters(["api"]),
   mounted(){
@@ -70,8 +54,5 @@ body{
   background: #f6f6f6;
   padding: 10px;
   min-height: 100vh;
-}
-.readed{
-  background: #e9e9e9 !important
 }
 </style>

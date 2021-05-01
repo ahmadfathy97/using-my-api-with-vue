@@ -1,7 +1,7 @@
 <template>
   <div class="profile">
     <div v-if="!err">
-      <div style="margin-bottom: 5rem" class="col-md-12 bg-light p-2 header-container position-relative">
+      <div style="margin-bottom: 5rem" class="col-md-12 bg-light header-container position-relative">
         <img :src="user.pic" class="user-pic position-absolute rounded-circle shadow" alt="">
       </div>
       <div class="container mt-5">

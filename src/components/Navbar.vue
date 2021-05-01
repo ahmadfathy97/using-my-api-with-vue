@@ -90,32 +90,12 @@ export default{
     if(window.localStorage && window.localStorage.getItem('authToken')){
       this.logedIn = true;
       this.user_id = window.localStorage.getItem('user_id');
-      let fetchNewNotis = setInterval(() => {
-        if(window.localStorage.getItem('authToken')){
-          fetch(`${this.api}/users/notifications`,{
-            method: 'GET',
-            headers: {
-              'Content-Type':'application/josn',
-              'auth_token': window.localStorage.getItem('authToken') || null
-            }
-          })
-          .then(res => res.json())
-          .then((data)=>{
-            let unreaded = data.notis.filter((noti)=>{
-              return noti.readed === false;
-            });
-            this.notisNum = unreaded.length;
-            console.log(this.notisNum, unreaded.length);
-          })
-          .catch((err)=>{
-            console.log(err);
-          })
-        } else{
-          clearInterval(fetchNewNotis)
-        }
-      }, 10000)
+      this.fetchNewNotis();
+
+      setInterval(this.fetchNewNotis, 10000);
+
     } else{
-      this.logedIn = false
+      this.logedIn = false;
     }
   },
   methods:{
@@ -123,7 +103,32 @@ export default{
       if(window.localStorage && window.localStorage.getItem('authToken')){
         window.localStorage.removeItem('authToken')
       }
+      this.logedIn = false;
       this.$router.history.push('/login');
+    },
+    fetchNewNotis(){
+      if(this.logedIn){
+        fetch(`${this.api}/users/notifications`,{
+          method: 'GET',
+          headers: {
+            'Content-Type':'application/josn',
+            'auth_token': window.localStorage.getItem('authToken') || null
+          }
+        })
+        .then(res => res.json())
+        .then((data)=>{
+          let unread = [];
+          if(data.notis){
+            unread = data.notis.filter((noti)=>{
+              return noti.readed === false;
+            });
+          }
+          this.notisNum = unread.length;;
+        })
+        .catch((err)=>{
+          console.log(err);
+        })
+      }
     }
   }
 }
@@ -133,7 +138,7 @@ export default{
     position: fixed !important;
     top: 0;left:0;
     width: 100%;
-    border-bottom: 4px solid #007bff;
+    border-bottom: 2px solid #007bff;
     z-index: 9999999999999999999;
   }
   a{

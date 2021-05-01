@@ -2,7 +2,7 @@
   <div class="home">
     <div class="container">
 
-      <div v-if="!logedIn" class="row d-flex align-items-center py-3">
+      <div v-if="!logedIn" style="perspective: 2000px;" class="row d-flex align-items-center py-3">
           <div class="col-md-6">
             <h1 class="page-title">Habshtakanat</h1>
             <p class="h4 m-0" style="text-indent: 20px;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
@@ -117,11 +117,11 @@ export default{
 </script>
 <style scoped lang="scss">
 .mooc-post{
+  background: #fff;
   box-shadow: 0 4px 15px #222;
-  padding: .5rem .25rem;
   margin: 50px auto;
   border-radius: 10px;
-  transform: rotate3d(0, 1 , 0, -45deg) rotate(10deg);
+  transform: rotate3d(0, -4.5, 0, 50deg) rotateZ(1deg);
   *{
     border-radius: 5px;
     margin: .5rem .25rem;
