@@ -49,7 +49,7 @@
                 </div>
               </div>
               <div class="text">
-                <div class="line short animatedh"></div>
+                <div class="line short animatedh comment-body"></div>
               </div>
             </div>
           </section>
@@ -122,6 +122,13 @@ export default{
   margin: 50px auto;
   border-radius: 10px;
   transform: rotate3d(0, -4.5, 0, 50deg) rotateZ(1deg);
+  perspective: 2000px;
+  &:hover *:not(.list, .item, .likes, .user, .avatar, .name, .info , .date, .comment .text, .comment-body){
+    box-shadow: 0 4px 8px #000;
+  }
+  &:hover *{
+    transform: translateZ(180px) !important;
+  }
   *{
     border-radius: 5px;
     margin: .5rem .25rem;
