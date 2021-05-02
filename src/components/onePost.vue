@@ -59,7 +59,7 @@
             <h3 class="d-flex align-items-center justify-content-start">
               <img :src="comment.user_id? comment.user_id.pic : '' " :alt="comment.user_id ? comment.user_id.username.slice(0,1).toUpperCase() : ':)'" class="user-img rounded-circle border border-dark" :style="'background-color:hsl('+ Math.floor(Math.random() * 255) + ', 100%, 50%)'"/>
               <div>
-                <router-link class="my-1 d-block" :to="'/user/'+ comment.user_id ? comment.user_id._id: '' ">
+                <router-link class="my-1 d-block" :to="'/user/'+ (comment.user_id ? comment.user_id._id: '' )">
                   {{comment.user_id.username}}
                 </router-link>
                 <h6 class="comment-time italic mx-2">{{comment.comment_time}}</h6>

@@ -4,12 +4,12 @@
 
       <div v-if="!logedIn" style="perspective: 2000px;" class="row d-flex align-items-center py-3">
           <div class="col-md-6">
-            <h1 class="page-title">Habshtakanat</h1>
-            <p class="h4 m-0" style="text-indent: 20px;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <div class="">
-              <router-link class="btn btn-primary m-1" to="/signup">Sign Up</router-link>
-              <span class="m-1">Or</span>
-              <router-link class="btn btn-primary m-1" to="/login">Login</router-link>
+            <h1 class="page-title my-3">Habshtakanat</h1>
+            <p class="h4 m-0" style="text-indent: 20px;">Share you experiences with your followers and get some feedback about it, And learn new things in diffrent fields from the people you are following. </p>
+            <div class="my-3">
+              <router-link class="bold h4 text-primary m-1" to="/signup">Sign Up</router-link>
+              <span class="m-1 bold">Or</span>
+              <router-link class="bold h4 text-primary m-1" to="/login">Login</router-link>
             </div>
           </div>
           <section class="mooc-post col-md-6">
@@ -17,7 +17,7 @@
             <div class="animatedv image"></div>
             <div class="animatedh line first"></div>
             <div class="animatedh line"></div>
-            <div class="animatedh line short"></div><br/>
+            <div class="animatedh line short mb-3"></div>
             <div class="animatedh line first"></div>
             <div class="animatedh line"></div>
             <div class="animatedh line short"></div>
@@ -123,11 +123,22 @@ export default{
   border-radius: 10px;
   transform: rotate3d(0, -4.5, 0, 50deg) rotateZ(1deg);
   perspective: 2000px;
-  &:hover *:not(.list, .item, .likes, .user, .avatar, .name, .info , .date, .comment .text, .comment-body){
-    box-shadow: 0 4px 8px #000;
-  }
-  &:hover *{
-    transform: translateZ(180px) !important;
+  // &:hover *:not(.list, .item, .likes, .user, .avatar, .name, .info , .date, .comment .text, .comment-body){
+  //   box-shadow: 0 2px 4px #000;
+  // }
+  // &:hover *{
+  //   transform: translateZ(180px) !important;
+  // }
+  &:after{
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    background: #333;
+    width: 100%;
+    border-radius: 50%;
+    height: 20px;
+    filter: blur(15px);
   }
   *{
     border-radius: 5px;
@@ -168,18 +179,19 @@ export default{
   .list{
     .item{
       width: 80%;
+      margin:0;
       .circle{
         display: inline-block;
         width: 15px;
         height: 15px;
-        boredr-radius: 50%;
+        border-radius: 50%;
         background: #888;
         margin: 0;
       }
       .text{
         margin: 0;
         display: inline-block;
-        width: 220px;
+        width: 70%;
         height: 8px;
         background: #aaa;
       }

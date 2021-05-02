@@ -1,18 +1,18 @@
 <template>
-  <div class="container">
+  <div class="container p-2">
     <div class="row">
       <div class="col-md-12">
         <h1 class="page-title">Categories</h1>
       </div>
-      <div class="col-md-4" v-for="category in categories">
-        <div class="card" style="width: 100%; margin: 5px;">
-          <img class="card-img-top" :src="category.category_pic" alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">{{ category.category_name}}</h5>
-            <p class="card-text">{{category.category_info}}</p>
-            <router-link :to="'/categories/'+ category.category_name" class="btn btn-primary">{{ category.category_name}}</router-link>
+      <div class="col-md-4 p-2" v-for="category in [...categories]">
+        <router-link class="w-100 rounded shadow position-relative cat-container" :to="'/categories/'+ category.category_name">
+          <div class="position-absolute w-100 h-100">
+            <img class="w-100 h-100" :src="category.category_pic" :alt="category.category_name">
           </div>
-        </div>
+          <div class="position-absolute d-flex align-items-center justify-content-center cat-overlay">
+            <h5 class="text-center text-light">{{ category.category_name | capitalize}}</h5>
+          </div>
+        </router-link>
       </div>
     </div>
   </div>
@@ -28,6 +28,13 @@ export default{
     }
   },
   computed: mapGetters(["api"]),
+  filters:{
+    capitalize(value){
+      if (!value) return ''
+      value = value.toString()
+      return value.charAt(0).toUpperCase() + value.slice(1)
+    }
+  },
   mounted(){
     fetch(`${this.api}/categories`,{
       headers: {
@@ -44,5 +51,22 @@ export default{
 }
 </script>
 <style>
-
+.cat-container{
+  height: 300px;
+  overflow: hidden;
+}
+.cat-container:hover .cat-overlay{
+  width: 100%;
+  height: 100%;
+}
+.cat-overlay{
+  background: rgba(0,123,255,.9);
+  width: 0;
+  height: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  transition: all .4s ease;
+}
 </style>
