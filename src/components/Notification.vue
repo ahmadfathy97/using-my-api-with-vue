@@ -19,6 +19,7 @@ export default {
         comment: '/posts/',
         like: '/posts/',
         follow: '/user/'
+        'new-post': '/posts/'
       }
     }
   }
