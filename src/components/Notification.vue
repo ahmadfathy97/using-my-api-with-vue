@@ -18,7 +18,7 @@ export default {
       types: {
         comment: '/posts/',
         like: '/posts/',
-        follow: '/user/'
+        follow: '/user/',
         'new-post': '/posts/'
       }
     }
