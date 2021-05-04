@@ -92,8 +92,9 @@ export default{
   methods:{
     post(e){
       e.preventDefault();
-      let date = new Date();
-      this.data.created_at = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+      // let date = new ;
+      // this.data.created_at = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+      this.data.created_at = Date.now();
       fetch(`${this.api}/posts`,{
         method: 'POST',
         headers: {

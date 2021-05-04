@@ -5,7 +5,7 @@
         <img :src="noti.user_id.pic" class="noti-pic shadow mr-1"/>
         <span class=""> <b>{{noti.user_id.username}}</b> {{noti.noti_text}}</span>
       </div>
-      <span class=""> {{noti.noti_time}} </span>
+      <span class="italic"> {{dateHelper(noti.noti_time)}} </span>
     </router-link>
   </div>
 </template>
@@ -21,6 +21,12 @@ export default {
         follow: '/user/',
         'new-post': '/posts/'
       }
+    }
+  },
+  methods:{
+    dateHelper(date){
+      let options = {year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(Number.parseInt(date)).toLocaleDateString('en-US', options);
     }
   }
 }

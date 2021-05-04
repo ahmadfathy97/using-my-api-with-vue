@@ -9,7 +9,7 @@
         <h3 class="d-flex align-items-center justify-content-center flex-column">
           <router-link v-if="$route.params.id !== post._id" :to="'/posts/' + post._id">{{post.title}}</router-link>
           <span v-else>{{post.title}}</span>
-          <span class="italic">{{post.created_at}}</span>
+          <span class="italic">{{dateHelper(post.created_at)}}</span>
         </h3>
         <!-- post owner -->
         <h5 class="mx-3">
@@ -62,7 +62,7 @@
                 <router-link class="my-1 d-block" :to="'/user/'+ (comment.user_id ? comment.user_id._id: '' )">
                   {{comment.user_id.username}}
                 </router-link>
-                <h6 class="comment-time italic mx-2">{{comment.comment_time}}</h6>
+                <h6 class="comment-time italic mx-2">{{dateHelper(comment.comment_time)}}</h6>
               </div>
             </h3>
             <p class="comment-body">{{comment.comment_body}}</p>
@@ -106,8 +106,9 @@ export default{
   methods:{
     submitComment(e){
       if(!e.shiftKey && e.target.value.trim().length){
-        let date = new Date();
-        this.comment.comment_time = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+        // let date = new Date();
+        // this.comment.comment_time = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+        this.comment.comment_time = Date.now();
         this.comment.user_id = window.localStorage.getItem('user_id');
         this.comment.comment_body = e.target.value;
         fetch(`${this.api}/posts/${e.target.dataset.post}/add-comment`,{
@@ -135,8 +136,9 @@ export default{
 
     },
     like(e){
-      let date = new Date();
-      let data = {time: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`};
+      // let date = new Date();
+      // let data = {time: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`};
+      let data = {time: Date.now()};
       fetch(`${this.api}/posts/${e.target.dataset.post}/like`,{
         method: 'POST',
         headers:{
@@ -191,6 +193,10 @@ export default{
           return commentId !== comment._id
         })
       })
+    },
+    dateHelper(date){
+      let options = {year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(Number.parseInt(date)).toLocaleDateString('en-US', options);
     }
   }
 }
