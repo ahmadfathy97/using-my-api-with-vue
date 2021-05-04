@@ -5,7 +5,9 @@
       <div v-if="!logedIn" style="perspective: 2000px;" class="row d-flex align-items-center py-3">
           <div class="col-md-6">
             <h1 class="page-title my-3">Habshtakanat</h1>
-            <p class="h4 m-0" style="text-indent: 20px;">Share you experiences with your followers and get some feedback about it, And learn new things in diffrent fields from the people you are following. </p>
+            <p class="h4 m-0" style="text-indent: 20px;">Share your experiences with your followers
+and get some feedback about it, And learn new things in different fields from the people
+you are following.</p>
             <div class="my-3">
               <router-link class="bold h4 text-primary m-1" to="/signup">Sign Up</router-link>
               <span class="m-1 bold">Or</span>
