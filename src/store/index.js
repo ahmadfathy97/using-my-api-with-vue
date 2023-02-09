@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    api: 'https://tiny-blog-api.herokuapp.com/api'
+    // api: 'https://tiny-blog-api.herokuapp.com/api'
+    api: 'https://habshtakanat.onrender.com/api'
     // api: 'http://127.0.0.1:3000/api'
   },
   getters:{
